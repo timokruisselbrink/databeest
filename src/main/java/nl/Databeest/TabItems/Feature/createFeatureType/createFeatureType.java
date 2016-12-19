@@ -27,7 +27,7 @@ public class createFeatureType extends SubMenuItem{
             @Override
             public void actionPerformed(ActionEvent e) {
             saveFeatureType();
-
+             
             }
         });
     }
