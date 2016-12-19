@@ -14,7 +14,7 @@ public class Main {
      */
     private static void createAndShowGUI() {
         //SubMenuItems and set up the window.
-        JFrame frame = new JFrame("Hotel reservation system - test application- hallo Daniël en de rests");
+        JFrame frame = new JFrame("Hotel reservation system - test application");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Add content to the window.
