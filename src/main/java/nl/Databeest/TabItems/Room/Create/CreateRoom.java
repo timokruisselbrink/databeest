@@ -4,6 +4,8 @@ import nl.Databeest.TabItems.SubMenuItem;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -12,7 +14,6 @@ import java.util.ArrayList;
  */
 public class CreateRoom extends SubMenuItem {
     private JPanel mainPanel;
-    private JCheckBox combineCheckBox;
     private JTextField roomNumberTextField;
     private JTextField maxPersonsTextField;
     private JTextField customPriceTextField;
@@ -20,7 +21,13 @@ public class CreateRoom extends SubMenuItem {
     private JComboBox roomTypeComboBox;
     private JTextField floorTextField;
     private JTable specificationsTable;
+    private JButton btnAddRoom;
+    private JComboBox floorComboBox;
+    private JTable optionalFeaturesTable;
 
+    ArrayList<String> selectedSpecifications = new ArrayList<String>();
+
+    selectFeatureAbstractTableModel featureTableModel = new selectFeatureAbstractTableModel(getFeatures());
 
 
     @Override
@@ -33,20 +40,121 @@ public class CreateRoom extends SubMenuItem {
         return mainPanel;
     }
 
-    public CreateRoom(){
-        final ArrayList<String> selectedSpecifications = new ArrayList<String>();
-
+    public CreateRoom() {
+        getRoomTypes();
+        getFloors();
         specificationsTable.setModel(new selectSpecificationAbstractTableModel(getSpecifications()) {
             @Override
             public void addSelectedSpecification(String name) {
-                //write to specification_of_room
+                 selectedSpecifications.add(name);
+            }
 
-                selectedSpecifications.add(name);
-
+            @Override
+            public void removeSelectedSpecification(String name) {
+                selectedSpecifications.remove(name);
             }
         });
 
-        //roomTypeComboBox
+        optionalFeaturesTable.setModel(featureTableModel);
+
+        btnAddRoom.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Connection con = getConnection();
+
+                try {
+                    con.setAutoCommit(false);
+
+                    int roomId = insertRoom(con);
+                    insertSpecification(con, roomId);
+                    insertFeatures(con, roomId);
+
+                    con.commit();
+                    con.close();
+
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, ex.getMessage());
+
+                    if (con != null) {
+                        try {
+                            con.rollback();
+                        } catch(SQLException excep) {
+                            JOptionPane.showMessageDialog(null, excep.getMessage());
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    public int insertRoom(Connection con) throws SQLException {
+
+        PreparedStatement stmt = null;
+
+        int roomID = -1;
+
+
+            stmt = con.prepareStatement("SP_ADD_ROOM ?,?,?,?,?,?");
+            stmt.setEscapeProcessing(true);
+
+            stmt.setString(1, roomTypeComboBox.getSelectedItem().toString());
+            stmt.setInt(2, Integer.parseInt((String) floorComboBox.getSelectedItem()));
+            stmt.setInt(3, Integer.parseInt(roomNumberTextField.getText()));
+            stmt.setInt(4, Integer.parseInt(maxPersonsTextField.getText()));
+            if((customPriceTextField.getText() == null)||(customPriceTextField.getText().isEmpty())){
+
+                stmt.setNull(5, Types.VARCHAR);
+
+            }else {
+
+                stmt.setFloat(5, Float.valueOf(customPriceTextField.getText()));
+
+            }
+            stmt.setInt(6, Integer.parseInt(surfaceTextField.getText()));
+
+            ResultSet rs = stmt.executeQuery();
+
+            while(rs.next())
+            {
+                roomID = rs.getInt("ROOM_ID");
+            }
+
+
+        return roomID;
+    }
+
+    private void insertSpecification(Connection con, int roomId) throws SQLException {
+        PreparedStatement stmt = con.prepareStatement("SP_ADD_SPECIFICATION_FOR_ROOM ?,?");
+        stmt.setEscapeProcessing(true);
+        stmt.setInt(1, roomId);
+
+        for(int i = 0; i<selectedSpecifications.size(); i++) {
+                stmt.setString(2, selectedSpecifications.get(i).toString());
+                stmt.execute();
+        }
+        stmt.close();
+
+    }
+
+
+    private void insertFeatures(Connection con, int roomId) throws SQLException {
+
+        ArrayList<SelectedFeatureModel> selectedFeatures = featureTableModel.getSelectedFeatures();
+        PreparedStatement stmt = null;
+
+            stmt = con.prepareStatement("SP_ADD_FEATURE_TO_ROOM ?,?,?");
+            stmt.setEscapeProcessing(true);
+            stmt.setInt(2, roomId);
+
+            for (SelectedFeatureModel selectedFeature: selectedFeatures) {
+                stmt.setString(1, selectedFeature.getName());
+                stmt.setInt(3, selectedFeature.getAmount());
+
+                stmt.execute();
+            }
+
+            stmt.close();
     }
 
     public ResultSet getSpecifications() {
@@ -68,5 +176,63 @@ public class CreateRoom extends SubMenuItem {
         return rs;
     }
 
+    public ResultSet getFeatures() {
+        Connection con = getConnection();
+        ResultSet rs = null;
 
+
+        try {
+            PreparedStatement stmt = con.prepareStatement("SELECT NAME FROM FEATURE_TYPE" );
+            stmt.setEscapeProcessing(true);
+
+            rs=stmt.executeQuery();
+        }
+
+        catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+        return rs;
+    }
+
+
+    public void getRoomTypes() {
+        Connection con = getConnection();
+        PreparedStatement stmt = null;
+
+        try {
+            stmt = con.prepareStatement("SELECT NAME FROM ROOM_TYPE");
+            stmt.setEscapeProcessing(true);
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                roomTypeComboBox.addItem(rs.getString(1));
+            }
+            closeConn(con, stmt);
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+    }
+
+    public void getFloors() {
+        Connection con = getConnection();
+        PreparedStatement stmt = null;
+
+        try {
+            stmt = con.prepareStatement("SELECT DISTINCT FLOOR_NO FROM ROOM");
+            stmt.setEscapeProcessing(true);
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                floorComboBox.addItem(rs.getString(1));
+            }
+            closeConn(con, stmt);
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+    }
 }

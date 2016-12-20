@@ -73,7 +73,7 @@ public abstract class selectSpecificationAbstractTableModel extends AbstractTabl
         if (b) {
             addSelectedSpecification((String) ((Object[]) cache.elementAt(row))[0]);
         } else {
-            // checked.remove(row);
+            removeSelectedSpecification((String) ((Object[]) cache.elementAt(row))[0]);
         }
         fireTableRowsUpdated(row, row);
     }
@@ -99,6 +99,8 @@ public abstract class selectSpecificationAbstractTableModel extends AbstractTabl
     }
 
         public abstract void addSelectedSpecification(String name);
+
+    public abstract void removeSelectedSpecification(String name);
 
 
 }
