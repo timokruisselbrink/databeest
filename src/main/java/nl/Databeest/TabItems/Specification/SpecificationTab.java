@@ -10,8 +10,9 @@ import nl.Databeest.TabItems.SubMenuItem;
 public class SpecificationTab extends MenuItem {
     @Override
     protected SubMenuItem[] getMenuItems() {
-        SubMenuItem[] items = new SubMenuItem[1];
+        SubMenuItem[] items = new SubMenuItem[2];
         items[0] = new Index();
+        items[1] = new addSpecification();
 
         return items;
     }
