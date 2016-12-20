@@ -70,7 +70,6 @@ public class addFeatureMaintenance extends SubMenuItem{
         String part1 = parts[0];
         int part2 = Integer.parseInt(parts[1]);
 
-        System.out.println(part2);
 
 
 
@@ -88,22 +87,22 @@ public class addFeatureMaintenance extends SubMenuItem{
 
 
         try{
-            stmt = con.prepareStatement("SP_ADD_FEATURE_MAINTENANCE ?,?,?,?,?,?");
-            stmt.setEscapeProcessing(true);
+                stmt = con.prepareStatement("SP_ADD_FEATURE_MAINTENANCE ?,?,?,?,?,?");
+                stmt.setEscapeProcessing(true);
 
 
-            stmt.setString(1, part1);
-            stmt.setInt(2, part2);
-            stmt.setDate(3, startDate);
-            stmt.setDate(4, endDate);
-            stmt.setString(5, txtReasonFeatureMaintenance.getText());
-            stmt.setBoolean(6, false);
+                stmt.setString(1, part1);
+                stmt.setInt(2, part2);
+                stmt.setDate(3, startDate);
+                stmt.setDate(4, endDate);
+                stmt.setString(5, txtReasonFeatureMaintenance.getText());
+                stmt.setBoolean(6, false);
 
-            stmt.execute();
+                stmt.execute();
 
 
 
-        } catch (SQLException ex) {
+            } catch (SQLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }

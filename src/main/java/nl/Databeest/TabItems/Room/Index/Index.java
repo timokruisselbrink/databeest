@@ -47,7 +47,7 @@ public class Index extends SubMenuItem{
 
 
         try {
-            stmt = con.prepareStatement("SELECT ROOM_ID, ROOM_TYPE_NAME FROM ROOM  WHERE ROOM.DELETE_STATUS <> 1 ");
+            stmt = con.prepareStatement("SELECT ROOM_ID, ROOM_TYPE_NAME FROM ROOM  WHERE ROOM.IS_DELETED <> 1 ");
             stmt.setEscapeProcessing(true);
 
             roomIndexTable.setModel(new IndexAbstractTableModel(stmt.executeQuery()) {
