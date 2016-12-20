@@ -209,20 +209,20 @@ public class MakeReservation  extends SubMenuItem {
             createReservationsForRooms(con, reservationNumber);
 
             con.commit();
-            con.close();
+        con.close();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, e.getMessage());
+    } catch (SQLException e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, e.getMessage());
 
-            if (con != null) {
-                try {
-                    con.rollback();
-                } catch(SQLException excep) {
-                    JOptionPane.showMessageDialog(null, e.getMessage());
-                }
+        if (con != null) {
+            try {
+                con.rollback();
+            } catch(SQLException excep) {
+                JOptionPane.showMessageDialog(null, excep.getMessage());
             }
         }
+    }
     }
 
     private void createReservationsForRooms(Connection con, int reservationNumber) throws SQLException {
