@@ -88,7 +88,7 @@ public class addFeatureMaintenance extends SubMenuItem{
 
 
         try{
-            stmt = con.prepareStatement("SP_ADD_FEATURE_MAINTENANCE ?,?,?,?,?");
+            stmt = con.prepareStatement("SP_ADD_FEATURE_MAINTENANCE ?,?,?,?,?,?");
             stmt.setEscapeProcessing(true);
 
 
@@ -97,6 +97,7 @@ public class addFeatureMaintenance extends SubMenuItem{
             stmt.setDate(3, startDate);
             stmt.setDate(4, endDate);
             stmt.setString(5, txtReasonFeatureMaintenance.getText());
+            stmt.setBoolean(6, false);
 
             stmt.execute();
 
