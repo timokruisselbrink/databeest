@@ -18,6 +18,7 @@ public class FeatureTab extends MenuItem {
         items[1] = new createFeatureType();
         items[2] = new addFeature();
         items[3] = new addFeatureMaintenance();
+        //items[4] = new removeFeatureMaintenance();
         return items;
     }
 }
