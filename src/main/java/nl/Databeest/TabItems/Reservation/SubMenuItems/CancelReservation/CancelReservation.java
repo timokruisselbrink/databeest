@@ -61,7 +61,7 @@ public class CancelReservation extends SubMenuItem {
                     stmt.setInt(1, selectedReservation);
 
                     stmt.execute();
-
+                    JOptionPane.showMessageDialog(null, "The reservation has been cancelled successfully.", "Success!", 1);
                     closeConn(con, stmt);
 
                     searchReservations();

@@ -47,7 +47,7 @@ public class Index extends SubMenuItem {
 
 
         try {
-            stmt = con.prepareStatement("SELECT NAME, PRICE FROM SPECIFICATION WHERE IS_DELETED <> 1");
+            stmt = con.prepareStatement("SELECT NAME, PRICE FROM SPECIFICATION WHERE END_TIME IS NULL");
             stmt.setEscapeProcessing(true);
 
             tblSpecifications.setModel(new IndexAbstractTableModel(stmt.executeQuery()) {
