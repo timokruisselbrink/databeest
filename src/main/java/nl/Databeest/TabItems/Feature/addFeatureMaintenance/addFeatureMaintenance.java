@@ -61,6 +61,30 @@ public class addFeatureMaintenance extends SubMenuItem{
         return mainPanel;
     }
 
+
+    public String getFeatureTypeStartTime(String s) {
+        Connection con = getConnection();
+        PreparedStatement stmt = null;
+
+        try{
+            stmt = con.prepareStatement("SELECT START_TIME FROM FEATURE_TYPE WHERE NAME = ?");
+            stmt.setEscapeProcessing(true);
+
+            stmt.setString(1, s);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while(rs.next()) {
+                return rs.getString(1);
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+        return "1";
+    }
+
     public void addFeatureMaintenance() {
         Connection con = getConnection();
         PreparedStatement stmt = null;
@@ -87,19 +111,22 @@ public class addFeatureMaintenance extends SubMenuItem{
 
 
         try{
-                stmt = con.prepareStatement("SP_ADD_FEATURE_MAINTENANCE ?,?,?,?,?,?");
+                stmt = con.prepareStatement("SP_ADD_FEATURE_MAINTENANCE ?,?,?,?,?,?,?,?");
                 stmt.setEscapeProcessing(true);
 
 
                 stmt.setString(1, part1);
                 stmt.setInt(2, part2);
-                stmt.setDate(3, startDate);
-                stmt.setDate(4, endDate);
-                stmt.setString(5, txtReasonFeatureMaintenance.getText());
-                stmt.setBoolean(6, false);
+                stmt.setString(3, "Midden-Nederland");
+                stmt.setString(4, getFeatureTypeStartTime(part1));
+                stmt.setDate(5, startDate);
+                stmt.setDate(6, endDate);
+                stmt.setString(7, txtReasonFeatureMaintenance.getText());
+                stmt.setBoolean(8, false);
 
                 stmt.execute();
 
+                JOptionPane.showMessageDialog(null, "The feature maintenance has been added successfully.", "Success!", 1);
 
 
             } catch (SQLException ex) {
@@ -114,11 +141,13 @@ public class addFeatureMaintenance extends SubMenuItem{
         PreparedStatement stmt = null;
 
         try{
-            stmt = con.prepareStatement("SELECT FEATURE_TYPE_NAME, FEATURE_SEQ_NO FROM FEATURE WHERE DELETE_STATUS <> 1");
+            stmt = con.prepareStatement("SELECT FEATURE_TYPE_NAME, SEQ_NO FROM FEATURE WHERE IS_DELETED <> 1");
             stmt.setEscapeProcessing(true);
 
 
             ResultSet rs = stmt.executeQuery();
+
+
 
             while(rs.next()) {
                 String Feature_Type_Name = rs.getString(1);

@@ -102,6 +102,10 @@ public class CreateRoom extends SubMenuItem {
             stmt.setInt(2, Integer.parseInt((String) floorComboBox.getSelectedItem()));
             stmt.setInt(3, Integer.parseInt(roomNumberTextField.getText()));
             stmt.setInt(4, Integer.parseInt(maxPersonsTextField.getText()));
+            stmt.setDouble(5, 0);
+            stmt.setInt(6, Integer.parseInt(surfaceTextField.getText()));
+
+
             if((customPriceTextField.getText() == null)||(customPriceTextField.getText().isEmpty())){
 
                 stmt.setNull(5, Types.VARCHAR);
@@ -160,6 +164,7 @@ public class CreateRoom extends SubMenuItem {
     public ResultSet getSpecifications() {
         Connection con = getConnection();
         ResultSet rs = null;
+
 
 
         try {

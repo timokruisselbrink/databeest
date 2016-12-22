@@ -1,5 +1,6 @@
 package nl.Databeest.TabItems.Feature.addFeature;
 
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import nl.Databeest.TabItems.SubMenuItem;
 
 import javax.swing.*;
@@ -31,6 +32,8 @@ public class addFeature extends SubMenuItem{
             @Override
             public void actionPerformed(ActionEvent e) {
                 addFeature();
+
+
             }
         });
     }
@@ -45,6 +48,28 @@ public class addFeature extends SubMenuItem{
         return mainPanel;
     }
 
+    public String getFeatureTypeStartTime() {
+        Connection con = getConnection();
+        PreparedStatement stmt = null;
+
+        try{
+            stmt = con.prepareStatement("SELECT START_TIME FROM FEATURE_TYPE WHERE NAME = ?");
+            stmt.setEscapeProcessing(true);
+
+            stmt.setString(1, cmbAddFeature.getSelectedItem().toString());
+
+            ResultSet rs = stmt.executeQuery();
+
+            while(rs.next()) {
+                return rs.getString(1);
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+        return "1";
+    }
 
     public void addFeature() {
         Connection con = getConnection();
@@ -56,10 +81,13 @@ public class addFeature extends SubMenuItem{
 
             stmt.setString(1, cmbAddFeature.getSelectedItem().toString());
             stmt.setInt(2, highestFeatureSeqNoPlusOne());
-            stmt.setBoolean(4, false);
-            stmt.setString(3, "Midden-Nederland");
+            stmt.setString(3, getFeatureTypeStartTime());
+            stmt.setString(4, "Midden-Nederland");
 
-            stmt.execute();
+
+           stmt.execute();
+
+            JOptionPane.showMessageDialog(null, "The feature has been added successfully.", "Success!", 1);
 
 
 
@@ -74,7 +102,7 @@ public class addFeature extends SubMenuItem{
         PreparedStatement stmt = null;
 
         try{
-            stmt = con.prepareStatement("SELECT MAX(FEATURE_SEQ_NO)+1 FROM FEATURE WHERE FEATURE_TYPE_NAME = ?");
+            stmt = con.prepareStatement("SELECT MAX(SEQ_NO)+1 FROM FEATURE WHERE FEATURE_TYPE_NAME = ?");
             stmt.setEscapeProcessing(true);
 
             stmt.setString(1, cmbAddFeature.getSelectedItem().toString());
@@ -94,12 +122,13 @@ public class addFeature extends SubMenuItem{
         return 1;
     }
 
+
     public void getFeatureTypeName() {
         Connection con = getConnection();
         PreparedStatement stmt = null;
 
         try{
-            stmt = con.prepareStatement("SELECT NAME FROM FEATURE_TYPE WHERE IS_DELETED <> 1");
+            stmt = con.prepareStatement("SELECT NAME FROM FEATURE_TYPE WHERE END_TIME IS NULL");
             stmt.setEscapeProcessing(true);
 
             ResultSet rs = stmt.executeQuery();

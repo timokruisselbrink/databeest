@@ -1,5 +1,6 @@
 package nl.Databeest.TabItems.Specification;
 
+import microsoft.sql.Types;
 import nl.Databeest.Helpers.DateHelper;
 import nl.Databeest.TabItems.SubMenuItem;
 
@@ -23,7 +24,6 @@ public class addSpecification extends SubMenuItem {
     private JSpinner startDaySpinner;
     private JComboBox startMonthComboBox;
     private JSpinner startYearSpinner;
-    private JPanel endDatePanel;
     private JSpinner endDaySpinner;
     private JComboBox endMonthComboBox;
     private JSpinner endYearSpinner;
@@ -44,10 +44,10 @@ public class addSpecification extends SubMenuItem {
 
     public addSpecification() {
         startMonthComboBox.addItem("");
-        endMonthComboBox.addItem("");
+
         for (int i = 0; i < MONTHS.length; i++) {
             startMonthComboBox.addItem(MONTHS[i]);
-            endMonthComboBox.addItem(MONTHS[i]);}
+            }
 
         btnAddSpecification.addActionListener(new ActionListener() {
             @Override
@@ -69,27 +69,18 @@ public class addSpecification extends SubMenuItem {
                 startYearSpinner.getValue().toString()
         );
 
-        Date endDate = DateHelper.createSqlDate(
-                endDaySpinner.getValue().toString(),
-                endMonthComboBox.getSelectedIndex(),
-                endYearSpinner.getValue().toString()
-        );
-
-
 
         try{
-            stmt = con.prepareStatement("SP_CREATE_SPECIFICATION ?,?,?,?,?");
+            stmt = con.prepareStatement("SP_CREATE_SPECIFICATION ?,?,?");
             stmt.setEscapeProcessing(true);
 
 
             stmt.setString(1, txtAddSpecificationName.getText());
             stmt.setDate(2, startDate);
-            stmt.setDate(3, endDate);
-            stmt.setFloat(4, Float.parseFloat(txtAddSpecificationPrice.getText()));
-            stmt.setBoolean(5, false);
+            stmt.setFloat(3, Float.parseFloat(txtAddSpecificationPrice.getText()));
 
             stmt.execute();
-
+            JOptionPane.showMessageDialog(null, "The specification has been added successfully.", "Success!", 1);
 
 
         } catch (SQLException ex) {
