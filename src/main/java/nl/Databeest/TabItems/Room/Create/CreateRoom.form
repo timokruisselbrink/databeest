@@ -30,7 +30,7 @@
               <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Max. persons"/>
+              <text value="Max. persons*"/>
             </properties>
           </component>
           <component id="bdf25" class="javax.swing.JLabel">
@@ -46,7 +46,7 @@
               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Room number"/>
+              <text value="Room number*"/>
             </properties>
           </component>
           <component id="e1305" class="javax.swing.JLabel">
@@ -54,7 +54,7 @@
               <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Surface"/>
+              <text value="Surface*"/>
             </properties>
           </component>
           <component id="e6a37" class="javax.swing.JTextField" binding="roomNumberTextField">
@@ -139,7 +139,7 @@
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Room type"/>
+              <text value="Room type*"/>
             </properties>
           </component>
           <component id="db3f" class="javax.swing.JLabel">
@@ -147,7 +147,7 @@
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Floor"/>
+              <text value="Floor*"/>
             </properties>
           </component>
           <component id="bffdf" class="javax.swing.JComboBox" binding="floorComboBox">
