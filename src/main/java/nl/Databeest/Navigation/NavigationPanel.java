@@ -19,8 +19,8 @@ public class NavigationPanel extends JPanel {
         JTabbedPane tabbedPane = new JTabbedPane();
 
         tabbedPane.addTab("Receptionist",  new ReservationMenuItem());
-        tabbedPane.add("Feature", new FeatureTab());
-        tabbedPane.add("Room", new RoomTab());
+      //  tabbedPane.add("Feature", new FeatureTab());
+       // tabbedPane.add("Room", new RoomTab());
 
         //Add the tabbed pane to this panel.
         add(tabbedPane);
