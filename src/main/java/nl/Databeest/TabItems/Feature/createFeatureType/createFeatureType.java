@@ -48,14 +48,12 @@ public class createFeatureType extends SubMenuItem{
         java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 
         try{
-            stmt = con.prepareStatement("SP_CREATE_FEATURE_TYPE ?,?,?,?,?");
+            stmt = con.prepareStatement("SP_CREATE_FEATURE_TYPE ?,?,?");
             stmt.setEscapeProcessing(true);
 
             stmt.setString(1, txtFeatureTypeName.getText());
             stmt.setFloat(2, Float.valueOf(txtFeatureTypePrice.getText()));
             stmt.setDate(3, date);
-            stmt.setDate(4, null);
-            stmt.setBoolean(5,false);
 
             stmt.execute();
 

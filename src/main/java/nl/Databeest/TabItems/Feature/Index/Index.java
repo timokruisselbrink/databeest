@@ -48,7 +48,7 @@ public class Index extends SubMenuItem {
 
 
         try {
-            stmt = con.prepareStatement("SELECT FEATURE_TYPE.NAME,  FEATURE.FEATURE_SEQ_NO, FEATURE_TYPE.PRICE FROM FEATURE INNER JOIN FEATURE_TYPE ON FEATURE.FEATURE_TYPE_NAME = FEATURE_TYPE.NAME WHERE FEATURE.DELETE_STATUS <> 1 ");
+            stmt = con.prepareStatement("SELECT FEATURE_TYPE.NAME,  SEQ_NO, FEATURE_TYPE.PRICE FROM FEATURE INNER JOIN FEATURE_TYPE ON FEATURE.FEATURE_TYPE_NAME = FEATURE_TYPE.NAME WHERE FEATURE.IS_DELETED <> 1");
             stmt.setEscapeProcessing(true);
 
             featureIndexTable.setModel(new IndexAbstractTableModel(stmt.executeQuery()) {
@@ -78,6 +78,7 @@ public class Index extends SubMenuItem {
             stmt.setInt(2, seqNo);
 
             stmt.execute();
+            JOptionPane.showMessageDialog(null, "The feature has been successfully removed.", "Success!", 1);
 
             closeConn(con, stmt);
         } catch (SQLException ex) {

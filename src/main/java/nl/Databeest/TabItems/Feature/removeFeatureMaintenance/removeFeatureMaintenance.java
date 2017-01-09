@@ -86,7 +86,7 @@ public class removeFeatureMaintenance extends SubMenuItem{
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement("SELECT FEATURE_MAINTENANCE_SEQ_NO, FEATURE_TYPE_NAME, FEATURE_SEQ_NO, START_TIME FROM FEATURE_MAINTENANCE WHERE IS_CANCELLED <> 1");
+            stmt = con.prepareStatement("SELECT FEATURE_TYPE_NAME, FEATURE_SEQ_NO, START_TIME FROM FEATURE_MAINTENANCE WHERE IS_CANCELLED <> 1");
             stmt.setEscapeProcessing(true);
 
 
@@ -97,7 +97,7 @@ public class removeFeatureMaintenance extends SubMenuItem{
                 @Override
                 public void deleteRow(Object[] row) {
 
-                    deleteFeatureMaintenance(Integer.parseInt((String) row[0]));
+                    deleteFeatureMaintenance((String) row[0], Integer.parseInt((String) row[1]));
                 }
             });
             closeConn(con, stmt);
@@ -113,18 +113,19 @@ public class removeFeatureMaintenance extends SubMenuItem{
         }
     }
 
-        private void deleteFeatureMaintenance(int seqNo){
+        private void deleteFeatureMaintenance(String typeNaam, int seqNo){
             Connection con = getConnection();
             PreparedStatement stmt = null;
 
             try {
-                stmt = con.prepareStatement("EXEC SP_DELETE_FEATURE_MAINTENANCE ?");
+                stmt = con.prepareStatement("EXEC SP_DELETE_FEATURE_MAINTENANCE ?,?");
                 stmt.setEscapeProcessing(true);
 
-                stmt.setInt(1, seqNo);
+                stmt.setInt(2, seqNo);
+                stmt.setString(1, typeNaam);
 
                 stmt.execute();
-
+                JOptionPane.showMessageDialog(null, "The feature maintenance type has been removed successfully.", "Success!", 1);
                 closeConn(con, stmt);
             } catch (SQLException ex) {
                 ex.printStackTrace();
