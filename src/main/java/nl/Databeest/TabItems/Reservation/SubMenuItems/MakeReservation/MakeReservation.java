@@ -209,37 +209,37 @@ public class MakeReservation  extends SubMenuItem {
             createReservationsForRooms(con, reservationNumber);
 
             con.commit();
-            con.close();
+        con.close();
+            JOptionPane.showMessageDialog(null, "The reservation has been made successfully.", "Success!", 1);
+    } catch (SQLException e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, e.getMessage());
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, e.getMessage());
-
-            if (con != null) {
-                try {
-                    con.rollback();
-                } catch(SQLException excep) {
-                    JOptionPane.showMessageDialog(null, e.getMessage());
-                }
+        if (con != null) {
+            try {
+                con.rollback();
+            } catch(SQLException excep) {
+                JOptionPane.showMessageDialog(null, excep.getMessage());
             }
         }
     }
+    }
 
     private void createReservationsForRooms(Connection con, int reservationNumber) throws SQLException {
-        PreparedStatement stmt = con.prepareStatement("EXEC SP_INSERT_RESERVATION_ROW ?,?,?,?,?,?,?,?,?");
+        PreparedStatement stmt = con.prepareStatement("EXEC SP_INSERT_RESERVATION_ROW ?,?,?,?,?,?");
         stmt.setEscapeProcessing(true);
 
         int seqNo = 1;
         for (SelectedRoomPanel selectedRoom: selectedRooms) {
-            stmt.setInt(1, reservationNumber);
-            stmt.setInt(2, seqNo);
+            stmt.setInt(1, seqNo);
+            stmt.setInt(2, reservationNumber);
             stmt.setInt(3, selectedRoom.getRoomId());
             stmt.setDate(4, startDate);
             stmt.setDate(5, endDate);
-            stmt.setDouble(6, 200.00); //TODO: calculate
+            /*stmt.setDouble(6, 200.00); //TODO: calculate
             stmt.setDouble(7, 200.00); //TODO: calculate
-            stmt.setDouble(8, 200.00); //TODO: calculate
-            stmt.setInt(9, selectedRoom.getAmountOfPersons());
+            stmt.setDouble(8, 200.00); //TODO: calculate*/
+            stmt.setInt(6, selectedRoom.getAmountOfPersons());
 
             stmt.execute();
 
@@ -333,7 +333,7 @@ public class MakeReservation  extends SubMenuItem {
             stmt.setNull(12, Types.DATE);
         }
         else {
-            stmt.setDate(12, Date.valueOf(birthdayTextField.getText()));
+            stmt.setString(12, birthdayTextField.getText());
         }
 
         ResultSet rs = stmt.executeQuery();
@@ -351,12 +351,12 @@ public class MakeReservation  extends SubMenuItem {
     }
 
     private int createReservation(Connection con, int guestId) throws SQLException {
-        PreparedStatement stmt = con.prepareStatement("EXEC SP_INSERT_RESERVATION ?,?,?");
+        PreparedStatement stmt = con.prepareStatement("EXEC SP_INSERT_RESERVATION ?,?");
         stmt.setEscapeProcessing(true);
 
         stmt.setString(1, "Direct");
         stmt.setInt(2, guestId);
-        stmt.setInt(3, 200); // TODO: calculate
+
 
         ResultSet rs = stmt.executeQuery();
 

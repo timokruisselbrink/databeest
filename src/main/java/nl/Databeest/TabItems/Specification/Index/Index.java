@@ -1,4 +1,4 @@
-package nl.Databeest.TabItems.Room.Index;
+package nl.Databeest.TabItems.Specification.Index;
 
 import nl.Databeest.Helpers.JTableButtonMouseListener;
 import nl.Databeest.Helpers.JTableButtonRenderer;
@@ -13,11 +13,11 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- * Created by timok on 15-12-16.
+ * Created by A on 20/12/2016.
  */
-public class Index extends SubMenuItem{
+public class Index extends SubMenuItem {
     private JPanel mainPanel;
-    private JTable roomIndexTable;
+    private JTable tblSpecifications;
 
     @Override
     protected String getMenuItemName() {
@@ -34,27 +34,27 @@ public class Index extends SubMenuItem{
     }
 
     private void setTable(){
-        getRooms();
+        getSpecifications();
 
         TableCellRenderer buttonRenderer = new JTableButtonRenderer();
-        roomIndexTable.getColumn("Delete").setCellRenderer(buttonRenderer);
-        roomIndexTable.addMouseListener(new JTableButtonMouseListener(roomIndexTable));
+        tblSpecifications.getColumn("Delete").setCellRenderer(buttonRenderer);
+        tblSpecifications.addMouseListener(new JTableButtonMouseListener(tblSpecifications));
     }
 
-    public void getRooms() {
+    private void getSpecifications(){
         Connection con = getConnection();
         PreparedStatement stmt = null;
 
 
         try {
-            stmt = con.prepareStatement("SELECT ROOM_ID, ROOM_NO, ROOM_TYPE_NAME FROM ROOM  WHERE ROOM.IS_DELETED <> 1 ");
+            stmt = con.prepareStatement("SELECT NAME, PRICE FROM SPECIFICATION WHERE END_TIME IS NULL");
             stmt.setEscapeProcessing(true);
 
-            roomIndexTable.setModel(new IndexAbstractTableModel(stmt.executeQuery()) {
+            tblSpecifications.setModel(new IndexAbstractTableModel(stmt.executeQuery()) {
                 @Override
                 public void deleteRow(Object[] row) {
-                    deleteRoom(Integer.parseInt((String) row[0]));
-                }
+                        deleteFeature((String)row[0]);
+                    }
             });
 
             closeConn(con, stmt);
@@ -64,16 +64,17 @@ public class Index extends SubMenuItem{
         }
     }
 
-    private void deleteRoom(int roomId){
+    private void deleteFeature(String name){
         Connection con = getConnection();
         PreparedStatement stmt = null;
 
 
         try {
-            stmt = con.prepareStatement("EXEC SP_DELETE_ROOM ?");
+            stmt = con.prepareStatement("EXEC SP_DELETE_SPECIFICATION ?");
             stmt.setEscapeProcessing(true);
 
-            stmt.setInt(1, roomId);
+            stmt.setString(1, name);
+
 
             stmt.execute();
 
