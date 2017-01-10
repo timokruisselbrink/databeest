@@ -56,7 +56,7 @@ public class createFeatureType extends SubMenuItem{
             stmt.setDate(3, date);
 
             stmt.execute();
-
+            JOptionPane.showMessageDialog(null, "The Feature Type has been added successfully.", "Success!", 1);
 
 
         } catch (SQLException ex) {
