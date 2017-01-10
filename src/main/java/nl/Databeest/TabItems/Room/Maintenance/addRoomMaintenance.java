@@ -16,10 +16,10 @@ public class addRoomMaintenance extends SubMenuItem{
     private JPanel mainPanel;
     private JButton btnAddRoomMaintenance;
     private JPanel startDatePanel;
+    private JPanel endDatePanel;
     private JSpinner startDaySpinner;
     private JComboBox startMonthComboBox;
     private JSpinner startYearSpinner;
-    private JPanel endDatePanel;
     private JSpinner endDaySpinner;
     private JComboBox endMonthComboBox;
     private JSpinner endYearSpinner;
@@ -86,6 +86,7 @@ public class addRoomMaintenance extends SubMenuItem{
             stmt.setString(4, txtAddRoomMaintenanceReason.getText());
 
             stmt.execute();
+            JOptionPane.showMessageDialog(null, "The room maintenance has been added successfully.", "Success!", 1);
 
 
 
@@ -106,6 +107,7 @@ public class addRoomMaintenance extends SubMenuItem{
 
 
             ResultSet rs = stmt.executeQuery();
+
 
             while(rs.next()) {
                 int roomID = rs.getInt(1);
