@@ -1,9 +1,11 @@
 package nl.Databeest.TabItems.Reservation.SubMenuItems.MakeReservation;
 
+import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Vector;
 
 /**
@@ -93,5 +95,16 @@ public abstract class AvailableFeatureTableModel extends AbstractTableModel {
         return ((Object[]) cache.elementAt(row))[col];
     }
 
+    public ArrayList<SelectedFeatureModel> getSelectedFeatures(){
+        ArrayList<SelectedFeatureModel> list = new ArrayList<SelectedFeatureModel>();
 
+        for (Object row: cache) {
+            if((Integer) ((Object[])row)[colCount -1] >= 1){
+                list.add(new SelectedFeatureModel((String) ((Object[])row)[0], (Integer) ((Object[])row)[colCount -1]));
+            }
+        }
+
+
+        return list;
+    }
 }

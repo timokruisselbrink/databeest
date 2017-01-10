@@ -4,6 +4,7 @@ import nl.Databeest.Database.Database;
 
 import javax.swing.*;
 import java.sql.*;
+import java.util.ArrayList;
 
 /**
  * Created by timok on 08-12-16.
@@ -60,4 +61,10 @@ public class SelectedRoomPanel extends Database{
         return selectedRoomPanel;
     }
 
+
+    public ArrayList<SelectedFeatureModel> getSelectedFeatures(){
+       AvailableFeatureTableModel model = (AvailableFeatureTableModel) availableFeaturesTable.getModel();
+        return model.getSelectedFeatures();
+
+    }
 }
