@@ -44,10 +44,18 @@ public class createFeatureType extends SubMenuItem{
 
     public void saveFeatureType() {
         Connection con = getConnection();
+
         PreparedStatement stmt = null;
         java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
 
         try{
+            if(txtFeatureTypeName.getText()==null||txtFeatureTypeName.getText().isEmpty()){
+                throw new SQLException("feature type name can not be null");
+            }
+
+            if(txtFeatureTypePrice.getText()==null||txtFeatureTypePrice.getText().isEmpty()){
+                throw new SQLException("feature price can not be null");
+            }
             stmt = con.prepareStatement("SP_CREATE_FEATURE_TYPE ?,?,?");
             stmt.setEscapeProcessing(true);
 
@@ -57,6 +65,7 @@ public class createFeatureType extends SubMenuItem{
 
             stmt.execute();
 
+            JOptionPane.showMessageDialog(null, "The feature type has been added successfully.", "Success!", 1);
 
 
         } catch (SQLException ex) {

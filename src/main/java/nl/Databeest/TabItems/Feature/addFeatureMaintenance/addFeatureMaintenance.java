@@ -103,12 +103,14 @@ public class addFeatureMaintenance extends SubMenuItem{
                 startYearSpinner.getValue().toString()
         );
 
-        Date endDate = DateHelper.createSqlDate(
-                endDaySpinner.getValue().toString(),
-                endMonthComboBox.getSelectedIndex(),
-                endYearSpinner.getValue().toString()
-        );
-
+        Date endDate = null;
+        if(endMonthComboBox.getSelectedIndex() != 0){
+            endDate = DateHelper.createSqlDate(
+                    endDaySpinner.getValue().toString(),
+                    endMonthComboBox.getSelectedIndex(),
+                    endYearSpinner.getValue().toString()
+            );
+        }
 
         try{
                 stmt = con.prepareStatement("SP_ADD_FEATURE_MAINTENANCE ?,?,?,?,?,?,?,?");
@@ -120,7 +122,11 @@ public class addFeatureMaintenance extends SubMenuItem{
                 stmt.setString(3, "Midden-Nederland");
                 stmt.setString(4, getFeatureTypeStartTime(part1));
                 stmt.setDate(5, startDate);
+            if(endDate == null){
+                stmt.setNull(6, Types.DATE);
+            }else {
                 stmt.setDate(6, endDate);
+            }
                 stmt.setString(7, txtReasonFeatureMaintenance.getText());
                 stmt.setBoolean(8, false);
 
