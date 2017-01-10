@@ -19,7 +19,6 @@ public class CreateRoom extends SubMenuItem {
     private JTextField customPriceTextField;
     private JTextField surfaceTextField;
     private JComboBox roomTypeComboBox;
-    private JTextField floorTextField;
     private JTable specificationsTable;
     private JButton btnAddRoom;
     private JComboBox floorComboBox;
@@ -76,6 +75,7 @@ public class CreateRoom extends SubMenuItem {
                     ex.printStackTrace();
                     JOptionPane.showMessageDialog(null, ex.getMessage());
 
+
                     if (con != null) {
                         try {
                             con.rollback();
@@ -106,11 +106,13 @@ public class CreateRoom extends SubMenuItem {
             stmt.setInt(6, Integer.parseInt(surfaceTextField.getText()));
 
 
+
+
             if((customPriceTextField.getText() == null)||(customPriceTextField.getText().isEmpty())){
 
                 stmt.setNull(5, Types.VARCHAR);
 
-            }else {
+            } else {
 
                 stmt.setFloat(5, Float.valueOf(customPriceTextField.getText()));
 
@@ -118,6 +120,7 @@ public class CreateRoom extends SubMenuItem {
             stmt.setInt(6, Integer.parseInt(surfaceTextField.getText()));
 
             ResultSet rs = stmt.executeQuery();
+            JOptionPane.showMessageDialog(null, "The room has been added successfully.", "Success!", 1);
 
             while(rs.next())
             {
