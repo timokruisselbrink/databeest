@@ -30,21 +30,14 @@ public class MakeReservation  extends SubMenuItem {
     private JPanel availableRoomsPanel;
     private JTable availableRoomsTable;
     private JPanel chosenRoomHolder;
-    private JPanel guestInfoPanel;
-    private JTextField firstNameTextField;
-    private JTextField countryTextField;
     private JButton makeReservationButton;
-    private JTextField prefiexTextField;
-    private JTextField lastNameTextField;
-    private JTextField phoneNumberTextField;
-    private JTextField emalAddressTextField;
-    private JComboBox genderComboBox;
-    private JTextField birthdayTextField;
-    private JTextField addressTextField;
-    private JTextField address2TextField;
-    private JTextField creditCardNumberTextField;
-    private JTextField debitCardNumberTextField;
     private JButton clearScreenButton;
+    private JPanel accountPanel;
+    private JTabbedPane accountTabbedPane;
+
+    private Login loginPanel;
+    private  Register registerPanel;
+    private WithoutAccount withoutAccountPanel;
 
     private Date startDate, endDate;
 
@@ -63,9 +56,17 @@ public class MakeReservation  extends SubMenuItem {
     }
 
     public MakeReservation(){
-        createComboBoxItems();
+       createComboBoxItems();
         setActionListeners();
         setTestData();
+        createCreateAccount();
+
+        JSpinner.NumberEditor editor1 = new JSpinner.NumberEditor(endYearSpinner, "#");
+        endYearSpinner.setEditor(editor1);
+
+        JSpinner.NumberEditor editor2 = new JSpinner.NumberEditor(startYearSpinner, "#");
+        startYearSpinner.setEditor(editor2);
+
 
         BoxLayout boxlayout = new BoxLayout(chosenRoomHolder, BoxLayout.Y_AXIS);
         chosenRoomHolder.setLayout(boxlayout);
@@ -81,27 +82,32 @@ public class MakeReservation  extends SubMenuItem {
         });
     }
 
+    public void createCreateAccount(){
+     //  accountTabbedPane = new JTabbedPane();
+        accountTabbedPane.removeAll();
+        loginPanel = new Login();
+        registerPanel = new Register();
+        withoutAccountPanel = new WithoutAccount();
+
+        accountTabbedPane.addTab(loginPanel.getMenuItemName(),loginPanel.getMainPanel());
+        accountTabbedPane.addTab(registerPanel.getMenuItemName(),registerPanel.getMainPanel());
+        accountTabbedPane.addTab(withoutAccountPanel.getMenuItemName(),withoutAccountPanel.getMainPanel());
+
+        accountTabbedPane.revalidate();
+        accountTabbedPane.repaint();
+    }
+
     public void clearScreen(){
         startDaySpinner.setValue(1);
         startMonthComboBox.setSelectedIndex(1);
-        startYearSpinner.setValue(2000);
+        startYearSpinner.setValue(2017);
         endDaySpinner.setValue(1);
         endMonthComboBox.setSelectedIndex(1);
-        endYearSpinner.setValue(2000);
+        endYearSpinner.setValue(2017);
 
         availableRoomsTable.setModel(new DefaultTableModel());
 
-        firstNameTextField.setText("");
-        countryTextField.setText("");
-        prefiexTextField.setText("");
-        lastNameTextField.setText("");
-        phoneNumberTextField.setText("");
-        emalAddressTextField.setText("");
-        birthdayTextField.setText("");
-        addressTextField.setText("");
-        address2TextField.setText("");
-        creditCardNumberTextField.setText("");
-        debitCardNumberTextField.setText("");
+        createCreateAccount();
 
         chosenRoomHolder.removeAll();
         chosenRoomHolder.revalidate();
@@ -177,10 +183,6 @@ public class MakeReservation  extends SubMenuItem {
                 endMonthComboBox.addItem(MONTHS[i]);
             }
 
-
-
-            genderComboBox.addItem("M");
-            genderComboBox.addItem("F");
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -202,7 +204,20 @@ public class MakeReservation  extends SubMenuItem {
         try {
             con.setAutoCommit(false);
 
-            int guestId = createGuest(con);
+            int guestId = -1;
+
+            switch (accountTabbedPane.getSelectedIndex())
+            {
+                case 0:
+                    guestId = loginPanel.getGuestId(con);
+                    break;
+                case 1:
+                    guestId = registerPanel.getGuestId(con);
+                    break;
+                case 2:
+                    guestId = withoutAccountPanel.getGuestId(con);
+                    break;
+            }
 
             int reservationNumber = createReservation(con, guestId);
 
@@ -211,6 +226,7 @@ public class MakeReservation  extends SubMenuItem {
             con.commit();
         con.close();
             JOptionPane.showMessageDialog(null, "The reservation has been made successfully.", "Success!", 1);
+            clearScreen();
     } catch (SQLException e) {
         e.printStackTrace();
         JOptionPane.showMessageDialog(null, e.getMessage());
@@ -243,111 +259,42 @@ public class MakeReservation  extends SubMenuItem {
 
             stmt.execute();
 
-            createFeatureReservationsForRoom(con, selectedRoom);
+            createFeatureReservationsForRoom(con, selectedRoom, reservationNumber, seqNo);
 
             seqNo++;
         }
+
+        stmt.close();
     }
 
-    private void createFeatureReservationsForRoom(Connection con, SelectedRoomPanel room) throws SQLException {
-        //TODO: alles hiero...
-    }
+    private void createFeatureReservationsForRoom(Connection con, SelectedRoomPanel room, int reservationNumber, int reservationRowSequenceNumber) throws SQLException {
+        room.getSelectedFeatures();
 
-    private int createGuest(Connection con) throws SQLException {
-        PreparedStatement stmt = con.prepareStatement("EXEC SP_SIGN_UP_GUEST ?,?,?,?,?,?,?,?,?,?,?,?");
+
+        PreparedStatement stmt = con.prepareStatement("EXEC\t[dbo].[SP_INSERT_FEATURE_FOR_RESERVATION_ROW]\n" +
+                "\t\t@Feature_Type_Name = ?,\n" +
+                "\t\t@Feature_Amount = ?,\n" +
+                "\t\t@Reservation_No = ?,\n" +
+                "\t\t@Reservation_Row_Seq_No = ?,\n" +
+                "\t\t@Start_Time = ?,\n" +
+                "\t\t@End_Time = ?");
         stmt.setEscapeProcessing(true);
 
-        if(firstNameTextField.getText() == null || firstNameTextField.getText().isEmpty()){
-            stmt.setNull(1, Types.VARCHAR);
-        }
-        else {
-            stmt.setString(1, firstNameTextField.getText());
-        }
+        stmt.setInt(3, reservationNumber);
+        stmt.setInt(4, reservationRowSequenceNumber);
+        stmt.setDate(5, startDate);
+        stmt.setDate(6, endDate);
 
-        if(prefiexTextField.getText() == null || prefiexTextField.getText().isEmpty()){
-            stmt.setNull(2, Types.VARCHAR);
-        }
-        else {
-            stmt.setString(2, prefiexTextField.getText());
-        }
+        for (SelectedFeatureModel model: room.getSelectedFeatures()) {
+            stmt.setString(1, model.getFeatureTypeName());
+            stmt.setInt(2, model.getAmount());
 
-        if(lastNameTextField.getText() == null || lastNameTextField.getText().isEmpty()){
-            stmt.setNull(3, Types.VARCHAR);
-        }
-        else {
-            stmt.setString(3, lastNameTextField.getText());
-        }
 
-        if(creditCardNumberTextField.getText() == null || creditCardNumberTextField.getText().isEmpty()){
-            stmt.setNull(4, Types.VARCHAR);
-        }
-        else {
-            stmt.setString(4, creditCardNumberTextField.getText());
-        }
-
-        if(debitCardNumberTextField.getText() == null || debitCardNumberTextField.getText().isEmpty()){
-            stmt.setNull(5, Types.VARCHAR);
-        }
-        else {
-            stmt.setString(5, debitCardNumberTextField.getText());
-        }
-
-        if(phoneNumberTextField.getText() == null || phoneNumberTextField.getText().isEmpty()){
-            stmt.setNull(6, Types.VARCHAR);
-        }
-        else {
-            stmt.setString(6, phoneNumberTextField.getText());
-        }
-
-        if(emalAddressTextField.getText() == null || emalAddressTextField.getText().isEmpty()){
-            stmt.setNull(7, Types.VARCHAR);
-        }
-        else {
-            stmt.setString(7, emalAddressTextField.getText());
-        }
-
-        stmt.setString(8, (String) genderComboBox.getSelectedItem());
-
-        if(countryTextField.getText() == null || countryTextField.getText().isEmpty()){
-            stmt.setNull(9, Types.VARCHAR);
-        }
-        else {
-            stmt.setString(9, countryTextField.getText());
-        }
-
-        if(addressTextField.getText() == null || addressTextField.getText().isEmpty()){
-            stmt.setNull(10, Types.VARCHAR);
-        }
-        else {
-            stmt.setString(10, addressTextField.getText());
-        }
-
-        if(address2TextField.getText() == null || address2TextField.getText().isEmpty()){
-            stmt.setNull(11, Types.VARCHAR);
-        }
-        else {
-            stmt.setString(11, address2TextField.getText());
-        }
-
-        if(birthdayTextField.getText() == null || birthdayTextField.getText().isEmpty()){
-            stmt.setNull(12, Types.DATE);
-        }
-        else {
-            stmt.setString(12, birthdayTextField.getText());
-        }
-
-        ResultSet rs = stmt.executeQuery();
-
-        int guestId = -1;
-
-        while(rs.next())
-        {
-            guestId = rs.getInt("GUEST_ID");
+            System.out.println(stmt);
+            stmt.execute();
         }
 
         stmt.close();
-
-        return guestId;
     }
 
     private int createReservation(Connection con, int guestId) throws SQLException {
