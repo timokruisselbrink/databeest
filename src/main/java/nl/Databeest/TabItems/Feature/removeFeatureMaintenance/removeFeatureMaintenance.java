@@ -92,31 +92,6 @@ public class removeFeatureMaintenance extends SubMenuItem{
         }
     }
 
-    public String getFeatureMaintenanceStartTime(String typeName, int seqNo) {
-        Connection con = getConnection();
-        PreparedStatement stmt = null;
-        try {
-            stmt = con.prepareStatement("SELECT START_TIME FROM FEATURE_MAINTENANCE WHERE FEATURE_TYPE_NAME = ? AND FEATURE_SEQ_NO = ?");
-            stmt.setEscapeProcessing(true);
-
-            stmt.setString(1, typeName);
-            stmt.setInt(2, seqNo);
-
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                return rs.getString("START_TIME");
-
-            }
-
-
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, ex.getMessage());
-        }
-        return "1";
-    }
-
 
         private void deleteFeatureMaintenance(String typeName, int seqNo, String startTime){
             Connection con = getConnection();
