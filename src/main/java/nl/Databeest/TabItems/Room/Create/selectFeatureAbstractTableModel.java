@@ -82,7 +82,7 @@ public class selectFeatureAbstractTableModel extends AbstractTableModel{
             } else {
                 selectedRows.remove(row);
                 ((Object[]) cache.elementAt(row))[col +1] = 0;
-            }
+        }
 
         }
         else if(col == colCount -1){
