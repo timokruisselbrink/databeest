@@ -17,7 +17,7 @@ public class Database {
     static String connectionString = "";
     static final String defaultConnectionString = "jdbc:sqlserver://databeest.database.windows.net:1433;database=Hotelreservationsystem;user=databeest@databeest;password=data123beestHAN;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
 
-    protected Connection getConnection() {
+    public Connection getConnection() {
         try {
             //STEP 2: Register JDBC driver
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");

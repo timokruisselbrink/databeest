@@ -6,6 +6,7 @@ import nl.Databeest.TabItems.Room.RoomTab;
 import nl.Databeest.TabItems.Specification.SpecificationTab;
 
 import javax.swing.*;
+import java.util.ArrayList;
 
 /**
  * Created by timok on 17-11-16.

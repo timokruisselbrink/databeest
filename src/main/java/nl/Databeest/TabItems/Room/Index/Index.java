@@ -1,7 +1,9 @@
 package nl.Databeest.TabItems.Room.Index;
 
+import nl.Databeest.Helpers.DateHelper;
 import nl.Databeest.Helpers.JTableButtonMouseListener;
 import nl.Databeest.Helpers.JTableButtonRenderer;
+import nl.Databeest.Helpers.RoleHelper;
 import nl.Databeest.TabItems.IndexAbstractTableModel;
 import nl.Databeest.TabItems.SubMenuItem;
 
@@ -36,9 +38,11 @@ public class Index extends SubMenuItem{
     private void setTable(){
         getRooms();
 
-        TableCellRenderer buttonRenderer = new JTableButtonRenderer();
-        roomIndexTable.getColumn("Delete").setCellRenderer(buttonRenderer);
-        roomIndexTable.addMouseListener(new JTableButtonMouseListener(roomIndexTable));
+        if(RoleHelper.isDeleter()) {
+            TableCellRenderer buttonRenderer = new JTableButtonRenderer();
+            roomIndexTable.getColumn("Delete").setCellRenderer(buttonRenderer);
+            roomIndexTable.addMouseListener(new JTableButtonMouseListener(roomIndexTable));
+        }
     }
 
     public void getRooms() {
@@ -47,7 +51,7 @@ public class Index extends SubMenuItem{
 
 
         try {
-            stmt = con.prepareStatement("SELECT ROOM_ID, ROOM_NO, ROOM_TYPE_NAME FROM ROOM  WHERE ROOM.IS_DELETED <> 1 ");
+            stmt = con.prepareStatement("SELECT ROOM_ID, ROOM_NO, ROOM_TYPE_NAME FROM ROOM  WHERE ROOM.END_TIME IS NULL");
             stmt.setEscapeProcessing(true);
 
             roomIndexTable.setModel(new IndexAbstractTableModel(stmt.executeQuery()) {
