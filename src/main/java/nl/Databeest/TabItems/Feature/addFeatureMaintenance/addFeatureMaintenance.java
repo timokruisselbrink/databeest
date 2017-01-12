@@ -104,7 +104,7 @@ public class addFeatureMaintenance extends SubMenuItem{
         );
 
         Date endDate = null;
-        if(endMonthComboBox.getSelectedIndex() != 0){
+          if(endMonthComboBox.getSelectedIndex() != 0){
             endDate = DateHelper.createSqlDate(
                     endDaySpinner.getValue().toString(),
                     endMonthComboBox.getSelectedIndex(),
