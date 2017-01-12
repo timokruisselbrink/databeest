@@ -10,6 +10,8 @@ import nl.Databeest.TabItems.SubMenuItem;
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,6 +23,7 @@ import java.sql.SQLException;
 public class Index extends SubMenuItem {
     private JPanel mainPanel;
     private JTable featureIndexTable;
+    private JButton btnRefreshFeatureIndex;
 
     @Override
     protected String getMenuItemName() {
@@ -34,7 +37,15 @@ public class Index extends SubMenuItem {
 
     public Index(){
         setTable();
+        btnRefreshFeatureIndex.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                refresh();
+            }
+        });
     }
+
+    private void refresh() {setTable();}
 
     private void setTable(){
         getFeatures();

@@ -10,6 +10,8 @@ import nl.Databeest.TabItems.SubMenuItem;
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,6 +24,7 @@ import java.sql.SQLException;
 public class DeletePartnerRooms extends SubMenuItem {
     private JTable roomOfPartnerIndexTable;
     private JPanel mainPanel;
+    private JButton btnRefreshRoomOfPartner;
 
     @Override
     protected String getMenuItemName() {
@@ -35,7 +38,17 @@ public class DeletePartnerRooms extends SubMenuItem {
 
     public DeletePartnerRooms(){
         setTable();
-}
+        btnRefreshRoomOfPartner.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                refreshRoomOfPartner();
+            }
+        });
+    }
+
+    private void refreshRoomOfPartner() {
+        setTable();
+    }
     private void setTable() {
         getRoomOfPartner();
         if(RoleHelper.isDeleter()) {

@@ -10,6 +10,8 @@ import nl.Databeest.TabItems.SubMenuItem;
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.*;
 
 
@@ -19,10 +21,17 @@ import java.sql.*;
 public class removeFeatureMaintenance extends SubMenuItem{
     private JPanel mainPanel;
     private JTable tblFeatureInMaintenance;
+    private JButton btnRefreshFeatureMaintenance;
 
     public removeFeatureMaintenance() {
         getRoomTypeNameAndFeatureSeqNoFromMaintenance();
 
+        btnRefreshFeatureMaintenance.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                featureMaintenanceRefresh();
+            }
+        });
     }
 
     @Override
@@ -35,6 +44,9 @@ public class removeFeatureMaintenance extends SubMenuItem{
         return mainPanel;
     }
 
+    private void featureMaintenanceRefresh() {
+        setTable();
+    }
     public void getRoomTypeNameAndFeatureSeqNoFromMaintenance() {
         Connection con = getConnection();
         PreparedStatement stmt = null;
