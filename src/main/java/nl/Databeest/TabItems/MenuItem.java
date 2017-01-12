@@ -2,6 +2,7 @@ package nl.Databeest.TabItems;
 
 
 import javax.swing.*;
+import java.util.ArrayList;
 
 /**
  * Created by timok on 17-11-16.
@@ -12,11 +13,9 @@ public abstract class MenuItem extends JPanel {
         createSideMenu();
     }
 
-    protected abstract SubMenuItem[] getMenuItems();
+    protected abstract ArrayList<SubMenuItem> getMenuItems();
 
     private void createSideMenu(){
-
-        SubMenuItem[] subMenuItems = getMenuItems();
 
         JTabbedPane tabbedPane = new JTabbedPane();
 
