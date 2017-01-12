@@ -15,8 +15,8 @@ public class Database {
     // JDBC driver name and database URL
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     static String connectionString = "";
-    static final String defaultConnectionString = "jdbc:sqlserver://databeest.database.windows.net:1433;database=Hotelreservationsystem;user=databeest@databeest;password=data123beestHAN;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
-
+    static final String defaultConnectionString = "";
+    jdbc:sqlserver://databeest.database.windows.net:1433;database=Hotelreservationsystem;user=databeest@databeest;password=data123beestHAN;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
     public Connection getConnection() {
         try {
             //STEP 2: Register JDBC driver

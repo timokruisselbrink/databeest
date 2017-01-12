@@ -1,6 +1,7 @@
 package nl.Databeest.TabItems.Room.Maintenance;
 
 import nl.Databeest.Helpers.DateHelper;
+import nl.Databeest.Helpers.UserRoles;
 import nl.Databeest.TabItems.SubMenuItem;
 
 import javax.swing.*;

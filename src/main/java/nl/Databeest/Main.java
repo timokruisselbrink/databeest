@@ -27,6 +27,7 @@ public class Main {
             //Add content to the window.
 
             UserRoles.getInstance().setRoles(loginDlg.getRoles());
+            UserRoles.getInstance().setUserId(loginDlg.getUserId());
 
             frame.add(new NavigationPanel(), BorderLayout.CENTER);
 

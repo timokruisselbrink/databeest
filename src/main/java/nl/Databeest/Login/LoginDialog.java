@@ -25,6 +25,8 @@ public class LoginDialog extends JDialog{
 
     private ArrayList<String> roles;
 
+    private int userId;
+
 
 
     PasswordAuthentication passwordAuthentication = new PasswordAuthentication();
@@ -79,14 +81,14 @@ public class LoginDialog extends JDialog{
                     ResultSet rs = stmt.executeQuery();
 
                     String passwordHash= "";
-                    int employeeID = -1;
+
 
 
                     int count = 0;
                     while(rs.next())
                     {
                         passwordHash = rs.getString("PASSWORD");
-                        employeeID = rs.getInt("EMPLOYEE_ID");
+                        userId = rs.getInt("EMPLOYEE_ID");
                         count++;
                     }
 
@@ -95,7 +97,7 @@ public class LoginDialog extends JDialog{
                     }
 
                     if(passwordAuthentication.authenticate(getPassword(), passwordHash))        {
-                        getRoles(employeeID, con);
+                        getRoles(userId, con);
                         succeeded = true;
                         dispose();
                     }
@@ -163,5 +165,9 @@ public class LoginDialog extends JDialog{
 
     public ArrayList<String> getRoles() {
         return roles;
+    }
+
+    public int getUserId() {
+        return userId;
     }
 }
