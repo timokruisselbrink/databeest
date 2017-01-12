@@ -27,7 +27,7 @@ public class Database {
         }
     }
 
-    protected Connection getConnection() {
+    public Connection getConnection() {
         try {
             //STEP 2: Register JDBC driver
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");

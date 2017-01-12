@@ -9,9 +9,6 @@ import java.awt.*;
  */
 public abstract class SubMenuItem extends Database {
 
-    public SubMenuItem(){
-    }
-
     abstract protected String getMenuItemName();
 
     abstract protected Component getMainPanel();
