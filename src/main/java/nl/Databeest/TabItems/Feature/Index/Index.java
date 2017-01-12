@@ -3,6 +3,7 @@ package nl.Databeest.TabItems.Feature.Index;
 import nl.Databeest.Helpers.JTableButtonMouseListener;
 import nl.Databeest.Helpers.JTableButtonRenderer;
 import nl.Databeest.Helpers.RoleHelper;
+import nl.Databeest.Helpers.UserRoles;
 import nl.Databeest.TabItems.IndexAbstractTableModel;
 import nl.Databeest.TabItems.SubMenuItem;
 
@@ -74,11 +75,12 @@ public class Index extends SubMenuItem {
 
 
         try {
-            stmt = con.prepareStatement("EXEC SP_DELETE_FEATURE ?,?");
+            stmt = con.prepareStatement("EXEC SP_DELETE_FEATURE ?,?,?");
             stmt.setEscapeProcessing(true);
 
             stmt.setString(1, name);
             stmt.setInt(2, seqNo);
+            stmt.setInt(3, UserRoles.getInstance().getUserId());
 
             stmt.execute();
             JOptionPane.showMessageDialog(null, "The feature has been successfully removed.", "Success!", 1);

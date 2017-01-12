@@ -3,6 +3,7 @@ package nl.Databeest.TabItems.Specification.Index;
 import nl.Databeest.Helpers.JTableButtonMouseListener;
 import nl.Databeest.Helpers.JTableButtonRenderer;
 import nl.Databeest.Helpers.RoleHelper;
+import nl.Databeest.Helpers.UserRoles;
 import nl.Databeest.TabItems.IndexAbstractTableModel;
 import nl.Databeest.TabItems.SubMenuItem;
 
@@ -73,11 +74,11 @@ public class Index extends SubMenuItem {
 
 
         try {
-            stmt = con.prepareStatement("EXEC SP_DELETE_SPECIFICATION ?");
+            stmt = con.prepareStatement("EXEC SP_DELETE_SPECIFICATION ?,?");
             stmt.setEscapeProcessing(true);
 
             stmt.setString(1, name);
-
+            stmt.setInt(2, UserRoles.getInstance().getUserId());
 
             stmt.execute();
 

@@ -1,6 +1,7 @@
 package nl.Databeest.TabItems.Feature.addFeatureMaintenance;
 
 import nl.Databeest.Helpers.DateHelper;
+import nl.Databeest.Helpers.UserRoles;
 import nl.Databeest.TabItems.SubMenuItem;
 
 import javax.swing.*;
@@ -108,7 +109,7 @@ public class addFeatureMaintenance extends SubMenuItem{
         }
 
         try{
-                stmt = con.prepareStatement("SP_ADD_FEATURE_MAINTENANCE ?,?,?,?,?,?,?,?");
+                stmt = con.prepareStatement("SP_ADD_FEATURE_MAINTENANCE ?,?,?,?,?,?,?,?,?");
                 stmt.setEscapeProcessing(true);
 
 
@@ -124,6 +125,7 @@ public class addFeatureMaintenance extends SubMenuItem{
             }
                 stmt.setString(7, txtReasonFeatureMaintenance.getText());
                 stmt.setBoolean(8, false);
+                stmt.setInt(9, UserRoles.getInstance().getUserId());
 
                 stmt.execute();
 
