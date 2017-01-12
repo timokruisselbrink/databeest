@@ -10,6 +10,7 @@ import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
@@ -46,7 +47,7 @@ public class DeletePartnerRooms extends SubMenuItem {
         PreparedStatement stmt = null;
 
         try{
-            stmt = con.prepareStatement("select p.partner_name, rop.room_id, rop.start_time from room_of_partner rop inner join [partner] p on rop.partner_id = p.partner_id where start_time < GETDATE() AND END_TIME > GETDATE()");
+            stmt = con.prepareStatement("select p.partner_name, rop.room_id, rop.start_time from room_of_partner rop inner join [partner] p on rop.partner_name = p.partner_name where start_time < GETDATE() AND END_TIME > GETDATE()");
             stmt.setEscapeProcessing(true);
 
             roomOfPartnerIndexTable.setModel(new IndexAbstractTableModel(stmt.executeQuery()) {
@@ -67,6 +68,25 @@ public class DeletePartnerRooms extends SubMenuItem {
     private void deleteRoomOfPartner(String partnerName, int roomId, String startDate) {
         Connection con = getConnection();
         PreparedStatement stmt = null;
+
+        try{
+            stmt = con.prepareStatement("EXEC SP_DELETE_ROOM_OF_PARTNER ?,?,?");
+            stmt.setEscapeProcessing(true);
+
+            stmt.setInt(1, roomId);
+            stmt.setString(2, partnerName);
+            stmt.setString(3, startDate);
+
+            stmt.execute();
+            JOptionPane.showMessageDialog(null, "The room of partner has been deleted successfully.", "Success!", 1);
+            closeConn(con, stmt);
+
+
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
 
 
 
