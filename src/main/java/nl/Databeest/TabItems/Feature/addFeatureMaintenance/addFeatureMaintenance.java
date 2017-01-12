@@ -8,11 +8,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
 /**
  * Created by A on 19/12/2016.
@@ -77,7 +72,7 @@ public class addFeatureMaintenance extends SubMenuItem{
             while(rs.next()) {
                 return rs.getString(1);
             }
-
+            closeConn(con, stmt);
         } catch (SQLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, ex.getMessage());
@@ -104,7 +99,7 @@ public class addFeatureMaintenance extends SubMenuItem{
         );
 
         Date endDate = null;
-        if(endMonthComboBox.getSelectedIndex() != 0){
+          if(endMonthComboBox.getSelectedIndex() != 0){
             endDate = DateHelper.createSqlDate(
                     endDaySpinner.getValue().toString(),
                     endMonthComboBox.getSelectedIndex(),
@@ -133,7 +128,7 @@ public class addFeatureMaintenance extends SubMenuItem{
                 stmt.execute();
 
                 JOptionPane.showMessageDialog(null, "The feature maintenance has been added successfully.", "Success!", 1);
-
+                closeConn(con, stmt);
 
             } catch (SQLException ex) {
             ex.printStackTrace();

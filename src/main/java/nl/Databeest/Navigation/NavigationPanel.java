@@ -1,6 +1,7 @@
 package nl.Databeest.Navigation;
 
 import nl.Databeest.TabItems.Feature.FeatureTab;
+import nl.Databeest.TabItems.PartnerRoom.PartnerRoomTabs;
 import nl.Databeest.TabItems.Reservation.ReservationMenuItem;
 import nl.Databeest.TabItems.Room.RoomTab;
 import nl.Databeest.TabItems.Specification.SpecificationTab;
@@ -24,6 +25,7 @@ public class NavigationPanel extends JPanel {
         tabbedPane.add("Feature", new FeatureTab());
         tabbedPane.add("Room", new RoomTab());
         tabbedPane.add("Specification", new SpecificationTab());
+        tabbedPane.add("Room of Partner", new PartnerRoomTabs());
 
 
         //Add the tabbed pane to this panel.

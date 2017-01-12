@@ -89,7 +89,7 @@ public class addRoomMaintenance extends SubMenuItem{
             stmt.execute();
             JOptionPane.showMessageDialog(null, "The room maintenance has been added successfully.", "Success!", 1);
 
-
+            closeConn(con, stmt);
 
         } catch (SQLException ex) {
             ex.printStackTrace();

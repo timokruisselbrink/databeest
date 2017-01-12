@@ -46,7 +46,7 @@ public abstract class selectSpecificationAbstractTableModel extends AbstractTabl
             }
 
 
-
+            rs.close();
             fireTableChanged(null);
 
 

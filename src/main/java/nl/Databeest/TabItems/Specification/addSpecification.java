@@ -81,7 +81,7 @@ public class addSpecification extends SubMenuItem {
 
             stmt.execute();
             JOptionPane.showMessageDialog(null, "The specification has been added successfully.", "Success!", 1);
-
+            closeConn(con, stmt);
 
         } catch (SQLException ex) {
             ex.printStackTrace();
