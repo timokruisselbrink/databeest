@@ -1,5 +1,6 @@
 package nl.Databeest.TabItems.Reservation.SubMenuItems.CancelReservation;
 
+import nl.Databeest.Helpers.UserRoles;
 import nl.Databeest.TabItems.SubMenuItem;
 
 import javax.swing.*;
@@ -55,10 +56,11 @@ public class CancelReservation extends SubMenuItem {
                 PreparedStatement stmt = null;
 
                 try {
-                    stmt = con.prepareStatement("SP_CANCEL_RESERVATION ?");
+                    stmt = con.prepareStatement("SP_CANCEL_RESERVATION ?,?");
                     stmt.setEscapeProcessing(true);
 
                     stmt.setInt(1, selectedReservation);
+                    stmt.setInt(2, UserRoles.getInstance().getUserId());
 
                     stmt.execute();
                     JOptionPane.showMessageDialog(null, "The reservation has been cancelled successfully.", "Success!", 1);
