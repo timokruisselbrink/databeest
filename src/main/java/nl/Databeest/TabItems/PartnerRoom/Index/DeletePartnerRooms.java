@@ -2,6 +2,7 @@ package nl.Databeest.TabItems.PartnerRoom.Index;
 
 import nl.Databeest.Helpers.JTableButtonMouseListener;
 import nl.Databeest.Helpers.JTableButtonRenderer;
+import nl.Databeest.Helpers.RoleHelper;
 import nl.Databeest.TabItems.IndexAbstractTableModel;
 import nl.Databeest.TabItems.SubMenuItem;
 
@@ -36,10 +37,11 @@ public class DeletePartnerRooms extends SubMenuItem {
 }
     private void setTable() {
         getRoomOfPartner();
-
-        TableCellRenderer buttonRenderer = new JTableButtonRenderer();
-        roomOfPartnerIndexTable.getColumn("Delete").setCellRenderer(buttonRenderer);
-        roomOfPartnerIndexTable.addMouseListener(new JTableButtonMouseListener(roomOfPartnerIndexTable));
+        if(RoleHelper.isDeleter()) {
+            TableCellRenderer buttonRenderer = new JTableButtonRenderer();
+            roomOfPartnerIndexTable.getColumn("Delete").setCellRenderer(buttonRenderer);
+            roomOfPartnerIndexTable.addMouseListener(new JTableButtonMouseListener(roomOfPartnerIndexTable));
+        }
     }
 
     private void getRoomOfPartner() {
@@ -47,7 +49,7 @@ public class DeletePartnerRooms extends SubMenuItem {
         PreparedStatement stmt = null;
 
         try{
-            stmt = con.prepareStatement("select p.partner_name, rop.room_id, rop.start_time from room_of_partner rop inner join [partner] p on rop.partner_name = p.partner_name where start_time < GETDATE() AND END_TIME > GETDATE()");
+            stmt = con.prepareStatement("select p.partner_name AS 'PARTNER NAME', rop.room_id AS 'ROOM ID', rop.start_time AS 'START TIME' from room_of_partner rop inner join [partner] p on rop.partner_name = p.partner_name where END_TIME >= GETDATE()");
             stmt.setEscapeProcessing(true);
 
             roomOfPartnerIndexTable.setModel(new IndexAbstractTableModel(stmt.executeQuery()) {
@@ -56,6 +58,8 @@ public class DeletePartnerRooms extends SubMenuItem {
                     deleteRoomOfPartner((String)row[0], Integer.parseInt((String) row[1]), (String) row[2]);
                 }
             });
+
+            closeConn(con, stmt);
 
 
         } catch (SQLException ex) {
@@ -87,10 +91,7 @@ public class DeletePartnerRooms extends SubMenuItem {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
-
-
-
-
+        setTable();
     }
 
 }

@@ -26,7 +26,9 @@ public class CreateRoom extends SubMenuItem {
 
     ArrayList<String> selectedSpecifications = new ArrayList<String>();
 
-    selectFeatureAbstractTableModel featureTableModel = new selectFeatureAbstractTableModel(getFeatures());
+
+
+    selectFeatureAbstractTableModel featureTableModel;
 
 
     @Override
@@ -42,17 +44,28 @@ public class CreateRoom extends SubMenuItem {
     public CreateRoom() {
         getRoomTypes();
         getFloors();
-        specificationsTable.setModel(new selectSpecificationAbstractTableModel(getSpecifications()) {
-            @Override
-            public void addSelectedSpecification(String name) {
-                 selectedSpecifications.add(name);
-            }
+        Connection con = getConnection();
 
-            @Override
-            public void removeSelectedSpecification(String name) {
-                selectedSpecifications.remove(name);
-            }
-        });
+        try {
+            featureTableModel = new selectFeatureAbstractTableModel(getFeatures(con));
+
+            specificationsTable.setModel(new selectSpecificationAbstractTableModel(getSpecifications(con)) {
+                @Override
+                public void addSelectedSpecification(String name) {
+                     selectedSpecifications.add(name);
+                }
+
+                @Override
+                public void removeSelectedSpecification(String name) {
+                    selectedSpecifications.remove(name);
+                }
+            });
+
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
 
         optionalFeaturesTable.setModel(featureTableModel);
 
@@ -164,42 +177,28 @@ public class CreateRoom extends SubMenuItem {
             stmt.close();
     }
 
-    public ResultSet getSpecifications() {
-        Connection con = getConnection();
+    public ResultSet getSpecifications(Connection con) throws SQLException {
         ResultSet rs = null;
 
 
 
-        try {
+
             PreparedStatement stmt = con.prepareStatement("SELECT NAME FROM SPECIFICATION" );
             stmt.setEscapeProcessing(true);
 
-            rs=stmt.executeQuery();
-        }
+            rs = stmt.executeQuery();
 
-        catch (SQLException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, ex.getMessage());
-        }
         return rs;
     }
 
-    public ResultSet getFeatures() {
-        Connection con = getConnection();
+    public ResultSet getFeatures(Connection con) throws SQLException {
         ResultSet rs = null;
 
-
-        try {
             PreparedStatement stmt = con.prepareStatement("SELECT NAME FROM FEATURE_TYPE" );
             stmt.setEscapeProcessing(true);
 
             rs=stmt.executeQuery();
-        }
 
-        catch (SQLException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, ex.getMessage());
-        }
         return rs;
     }
 

@@ -5,6 +5,8 @@ import nl.Databeest.TabItems.SubMenuItem;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.*;
 
 /**
@@ -46,6 +48,11 @@ public class addRoomOfPartner extends SubMenuItem {
             startMonthComboBox.addItem(MONTHS[i]);
             endMonthComboBox.addItem(MONTHS[i]);}
 
+        btnAddRoomOfPartnerButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                addRoomOfPartner();
+            }
+        });
     }
 
     private void getRoomId() {
@@ -92,7 +99,7 @@ public class addRoomOfPartner extends SubMenuItem {
         Connection con = getConnection();
         PreparedStatement stmt = null;
 
-        int roomID = (Integer) cmbRoomIdForPartnerRoom.getSelectedItem();
+        int roomID = Integer.parseInt((String) cmbRoomIdForPartnerRoom.getSelectedItem());
         String partnerName = (String) cmbPartnerNameForRoom.getSelectedItem();
 
         Date startDate = DateHelper.createSqlDate(
@@ -107,17 +114,18 @@ public class addRoomOfPartner extends SubMenuItem {
                 endYearSpinner.getValue().toString()
         );
 
+
         try{
             stmt = con.prepareStatement("EXEC SP_ADD_ROOM_OF_PARTNER ?,?,?,?,?");
             stmt.setEscapeProcessing(true);
 
-            stmt.setInt(1, Integer.parseInt((String)cmbRoomIdForPartnerRoom.getSelectedItem()));
-            stmt.setString(2, (String) cmbPartnerNameForRoom.getSelectedItem());
+            stmt.setInt(1, roomID);
+            stmt.setString(2, partnerName);
             stmt.setDate(3, startDate);
             stmt.setDate(4, endDate);
             stmt.setFloat(5, Float.valueOf(txtRoomOfPartnerPrice.getText()));
 
-            stmt.executeQuery();
+            stmt.execute();
             JOptionPane.showMessageDialog(null, "The room for the partner has been added successfully.", "Success!", 1);
             closeConn(con, stmt);
 
