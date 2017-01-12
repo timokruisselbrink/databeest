@@ -1,19 +1,32 @@
 package nl.Databeest.TabItems.Specification;
 
+import nl.Databeest.Helpers.RoleHelper;
+import nl.Databeest.Helpers.UserRoles;
 import nl.Databeest.TabItems.MenuItem;
 import nl.Databeest.TabItems.Specification.Index.Index;
 import nl.Databeest.TabItems.SubMenuItem;
+
+import java.util.ArrayList;
 
 /**
  * Created by A on 20/12/2016.
  */
 public class SpecificationTab extends MenuItem {
-    @Override
-    protected SubMenuItem[] getMenuItems() {
-        SubMenuItem[] items = new SubMenuItem[2];
-        items[0] = new Index();
-        items[1] = new addSpecification();
+    public SpecificationTab() {
+        super();
+    }
 
-        return items;
+    @Override
+    protected ArrayList<SubMenuItem> getMenuItems() {
+        ArrayList<SubMenuItem> subMenuItems = new ArrayList<SubMenuItem>();
+
+        if(RoleHelper.isDisplayer()){
+            subMenuItems.add(new Index());
+        }
+
+        if(RoleHelper.isCreator()){
+            subMenuItems.add(new addSpecification());
+        }
+        return subMenuItems;
     }
 }

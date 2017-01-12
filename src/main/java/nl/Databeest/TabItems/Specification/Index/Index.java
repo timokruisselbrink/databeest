@@ -2,6 +2,7 @@ package nl.Databeest.TabItems.Specification.Index;
 
 import nl.Databeest.Helpers.JTableButtonMouseListener;
 import nl.Databeest.Helpers.JTableButtonRenderer;
+import nl.Databeest.Helpers.RoleHelper;
 import nl.Databeest.TabItems.IndexAbstractTableModel;
 import nl.Databeest.TabItems.SubMenuItem;
 
@@ -36,9 +37,11 @@ public class Index extends SubMenuItem {
     private void setTable(){
         getSpecifications();
 
-        TableCellRenderer buttonRenderer = new JTableButtonRenderer();
-        tblSpecifications.getColumn("Delete").setCellRenderer(buttonRenderer);
-        tblSpecifications.addMouseListener(new JTableButtonMouseListener(tblSpecifications));
+        if(RoleHelper.isDeleter()) {
+            TableCellRenderer buttonRenderer = new JTableButtonRenderer();
+            tblSpecifications.getColumn("Delete").setCellRenderer(buttonRenderer);
+            tblSpecifications.addMouseListener(new JTableButtonMouseListener(tblSpecifications));
+        }
     }
 
     private void getSpecifications(){
