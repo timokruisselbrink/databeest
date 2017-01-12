@@ -69,11 +69,6 @@ public abstract class IndexAbstractTableModel extends AbstractTableModel {
                 }
             }
 
-
-
-
-
-
             fireTableChanged(null);
 
 

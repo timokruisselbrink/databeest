@@ -81,7 +81,7 @@ public class removeFeatureMaintenance extends SubMenuItem{
                 return rs.getString("START_TIME");
 
             }
-
+            closeConn(con, stmt);
         } catch (SQLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, ex.getMessage());

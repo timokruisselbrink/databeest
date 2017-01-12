@@ -63,7 +63,7 @@ public class addFeature extends SubMenuItem{
             while(rs.next()) {
                 return rs.getString(1);
             }
-
+            closeConn(con, stmt);
         } catch (SQLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, ex.getMessage());
@@ -85,8 +85,8 @@ public class addFeature extends SubMenuItem{
             stmt.setString(4, "Midden-Nederland");
 
 
-           stmt.execute();
-
+            stmt.execute();
+            closeConn(con, stmt);
             JOptionPane.showMessageDialog(null, "The feature has been added successfully.", "Success!", 1);
 
 
@@ -112,7 +112,7 @@ public class addFeature extends SubMenuItem{
             while(rs.next()) {
                 return rs.getInt(1);
             }
-
+            closeConn(con, stmt);
 
 
         } catch (SQLException ex) {

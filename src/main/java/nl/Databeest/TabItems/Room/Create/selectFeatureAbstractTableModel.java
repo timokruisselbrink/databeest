@@ -49,7 +49,7 @@ public class selectFeatureAbstractTableModel extends AbstractTableModel{
                 cache.addElement(record);
             }
 
-
+            rs.close();
 
             fireTableChanged(null);
 

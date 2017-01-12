@@ -1,6 +1,5 @@
 package nl.Databeest.TabItems.Feature.createFeatureType;
 
-import nl.Databeest.TabItems.IndexAbstractTableModel;
 import nl.Databeest.TabItems.SubMenuItem;
 
 import javax.swing.*;
@@ -66,7 +65,7 @@ public class createFeatureType extends SubMenuItem{
             stmt.execute();
 
             JOptionPane.showMessageDialog(null, "The feature type has been added successfully.", "Success!", 1);
-
+            closeConn(con, stmt);
 
         } catch (SQLException ex) {
             ex.printStackTrace();
