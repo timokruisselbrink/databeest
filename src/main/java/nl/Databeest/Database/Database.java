@@ -63,7 +63,7 @@ public class Database {
         Properties prop = new Properties();
 
         try {
-            InputStream stream = getClass().getClassLoader().getResourceAsStream("database.properties");
+            InputStream stream = new FileInputStream("./database.properties");
 
             prop.load(stream);
             connectionString = prop.getProperty("connectionString");
