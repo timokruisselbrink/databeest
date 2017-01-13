@@ -1,5 +1,6 @@
 package nl.Databeest.TabItems.Room.Create;
 
+import nl.Databeest.Helpers.UserRoles;
 import nl.Databeest.TabItems.SubMenuItem;
 
 import javax.swing.*;
@@ -108,7 +109,7 @@ public class CreateRoom extends SubMenuItem {
         int roomID = -1;
 
 
-            stmt = con.prepareStatement("SP_ADD_ROOM ?,?,?,?,?,?");
+            stmt = con.prepareStatement("SP_ADD_ROOM ?,?,?,?,?,?,?");
             stmt.setEscapeProcessing(true);
 
             stmt.setString(1, roomTypeComboBox.getSelectedItem().toString());
@@ -117,7 +118,7 @@ public class CreateRoom extends SubMenuItem {
             stmt.setInt(4, Integer.parseInt(maxPersonsTextField.getText()));
             stmt.setDouble(5, 0);
             stmt.setInt(6, Integer.parseInt(surfaceTextField.getText()));
-
+            stmt.setInt(7, UserRoles.getInstance().getUserId());
 
 
 
@@ -145,7 +146,7 @@ public class CreateRoom extends SubMenuItem {
     }
 
     private void insertSpecification(Connection con, int roomId) throws SQLException {
-        PreparedStatement stmt = con.prepareStatement("SP_ADD_SPECIFICATION_FOR_ROOM ?,?");
+        PreparedStatement stmt = con.prepareStatement("SP_ADD_SPECIFICATION_FOR_ROOM ?,?,?");
         stmt.setEscapeProcessing(true);
         stmt.setInt(1, roomId);
 
@@ -153,6 +154,7 @@ public class CreateRoom extends SubMenuItem {
                 stmt.setString(2, selectedSpecifications.get(i).toString());
                 stmt.execute();
         }
+        stmt.setInt(3, UserRoles.getInstance().getUserId());
         stmt.close();
 
     }
@@ -163,7 +165,7 @@ public class CreateRoom extends SubMenuItem {
         ArrayList<SelectedFeatureModel> selectedFeatures = featureTableModel.getSelectedFeatures();
         PreparedStatement stmt = null;
 
-            stmt = con.prepareStatement("SP_ADD_FEATURE_TO_ROOM ?,?,?");
+            stmt = con.prepareStatement("SP_ADD_FEATURE_TO_ROOM ?,?,?,?");
             stmt.setEscapeProcessing(true);
             stmt.setInt(2, roomId);
 
@@ -173,7 +175,7 @@ public class CreateRoom extends SubMenuItem {
 
                 stmt.execute();
             }
-
+             stmt.setInt(4, UserRoles.getInstance().getUserId());
             stmt.close();
     }
 

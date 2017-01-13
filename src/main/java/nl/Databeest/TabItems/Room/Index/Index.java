@@ -1,9 +1,6 @@
 package nl.Databeest.TabItems.Room.Index;
 
-import nl.Databeest.Helpers.DateHelper;
-import nl.Databeest.Helpers.JTableButtonMouseListener;
-import nl.Databeest.Helpers.JTableButtonRenderer;
-import nl.Databeest.Helpers.RoleHelper;
+import nl.Databeest.Helpers.*;
 import nl.Databeest.TabItems.IndexAbstractTableModel;
 import nl.Databeest.TabItems.SubMenuItem;
 
@@ -74,10 +71,12 @@ public class Index extends SubMenuItem{
 
 
         try {
-            stmt = con.prepareStatement("EXEC SP_DELETE_ROOM ?");
+            stmt = con.prepareStatement("EXEC SP_DELETE_ROOM ?,?");
             stmt.setEscapeProcessing(true);
 
             stmt.setInt(1, roomId);
+            stmt.setInt(2, UserRoles.getInstance().getUserId());
+
 
             stmt.execute();
 

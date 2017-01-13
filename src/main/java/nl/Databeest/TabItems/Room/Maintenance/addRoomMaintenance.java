@@ -77,7 +77,7 @@ public class addRoomMaintenance extends SubMenuItem{
 
 
         try{
-            stmt = con.prepareStatement("SP_ADD_ROOM_MAINTENANCE ?,?,?,?");
+            stmt = con.prepareStatement("SP_ADD_ROOM_MAINTENANCE ?,?,?,?,?");
             stmt.setEscapeProcessing(true);
 
 
@@ -85,6 +85,7 @@ public class addRoomMaintenance extends SubMenuItem{
             stmt.setDate(2, startDate);
             stmt.setDate(3, endDate);
             stmt.setString(4, txtAddRoomMaintenanceReason.getText());
+            stmt.setInt(5, UserRoles.getInstance().getUserId());
 
             stmt.execute();
             JOptionPane.showMessageDialog(null, "The room maintenance has been added successfully.", "Success!", 1);

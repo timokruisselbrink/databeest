@@ -1,6 +1,7 @@
 package nl.Databeest.TabItems.Feature.addFeature;
 
 import com.sun.org.apache.bcel.internal.generic.NEW;
+import nl.Databeest.Helpers.UserRoles;
 import nl.Databeest.TabItems.SubMenuItem;
 
 import javax.swing.*;
@@ -76,14 +77,14 @@ public class addFeature extends SubMenuItem{
         PreparedStatement stmt = null;
 
         try{
-            stmt = con.prepareStatement("SP_ADD_FEATURE ?,?,?,?");
+            stmt = con.prepareStatement("SP_ADD_FEATURE ?,?,?,?,?");
             stmt.setEscapeProcessing(true);
 
             stmt.setString(1, cmbAddFeature.getSelectedItem().toString());
             stmt.setInt(2, highestFeatureSeqNoPlusOne());
             stmt.setString(3, getFeatureTypeStartTime());
             stmt.setString(4, "Midden-Nederland");
-
+            stmt.setInt(5, UserRoles.getInstance().getUserId());
 
             stmt.execute();
             closeConn(con, stmt);

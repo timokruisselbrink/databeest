@@ -3,6 +3,7 @@ package nl.Databeest.TabItems.PartnerRoom.Index;
 import nl.Databeest.Helpers.JTableButtonMouseListener;
 import nl.Databeest.Helpers.JTableButtonRenderer;
 import nl.Databeest.Helpers.RoleHelper;
+import nl.Databeest.Helpers.UserRoles;
 import nl.Databeest.TabItems.IndexAbstractTableModel;
 import nl.Databeest.TabItems.SubMenuItem;
 
@@ -87,12 +88,13 @@ public class DeletePartnerRooms extends SubMenuItem {
         PreparedStatement stmt = null;
 
         try{
-            stmt = con.prepareStatement("EXEC SP_DELETE_ROOM_OF_PARTNER ?,?,?");
+            stmt = con.prepareStatement("EXEC SP_DELETE_ROOM_OF_PARTNER ?,?,?,?");
             stmt.setEscapeProcessing(true);
 
             stmt.setInt(1, roomId);
             stmt.setString(2, partnerName);
             stmt.setString(3, startDate);
+            stmt.setInt(4, UserRoles.getInstance().getUserId());
 
             stmt.execute();
             JOptionPane.showMessageDialog(null, "The room of partner has been deleted successfully.", "Success!", 1);

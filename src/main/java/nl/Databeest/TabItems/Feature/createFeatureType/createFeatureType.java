@@ -1,5 +1,6 @@
 package nl.Databeest.TabItems.Feature.createFeatureType;
 
+import nl.Databeest.Helpers.UserRoles;
 import nl.Databeest.TabItems.SubMenuItem;
 
 import javax.swing.*;
@@ -55,12 +56,13 @@ public class createFeatureType extends SubMenuItem{
             if(txtFeatureTypePrice.getText()==null||txtFeatureTypePrice.getText().isEmpty()){
                 throw new SQLException("feature price can not be null");
             }
-            stmt = con.prepareStatement("SP_CREATE_FEATURE_TYPE ?,?,?");
+            stmt = con.prepareStatement("SP_CREATE_FEATURE_TYPE ?,?,?,?");
             stmt.setEscapeProcessing(true);
 
             stmt.setString(1, txtFeatureTypeName.getText());
             stmt.setFloat(2, Float.valueOf(txtFeatureTypePrice.getText()));
             stmt.setDate(3, date);
+            stmt.setInt(4, UserRoles.getInstance().getUserId());
 
             stmt.execute();
 
