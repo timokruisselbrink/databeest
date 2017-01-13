@@ -8,6 +8,9 @@ import nl.Databeest.TabItems.Room.RoomTab;
 import nl.Databeest.TabItems.Specification.SpecificationTab;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
