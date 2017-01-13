@@ -53,6 +53,8 @@ public class LoginDialog extends JDialog{
         cs.gridwidth = 2;
         panel.add(tfUsername, cs);
 
+        tfUsername.setText(passwordAuthentication.hash("test123"));
+
         lbPassword = new JLabel("Password: ");
         cs.gridx = 0;
         cs.gridy = 1;

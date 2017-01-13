@@ -24,7 +24,6 @@ public class WithoutAccount extends SubMenuItem{
     private JTextField address2TextField;
     private JTextField addressTextField;
     private JComboBox genderComboBox;
-    private JTextField birthdayTextField;
     private JTextField debitCardNumberTextField;
 
     @Override
@@ -125,12 +124,7 @@ public class WithoutAccount extends SubMenuItem{
             stmt.setString(12, address2TextField.getText());
         }
 
-        if(birthdayTextField.getText() == null || birthdayTextField.getText().isEmpty()){
-            stmt.setNull(13, Types.DATE);
-        }
-        else {
-            stmt.setString(13, birthdayTextField.getText());
-        }
+        stmt.setNull(13, Types.DATE);
 
         ResultSet rs = stmt.executeQuery();
 

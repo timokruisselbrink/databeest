@@ -22,7 +22,6 @@ public class Register extends SubMenuItem {
     private JTextField address2TextField;
     private JTextField addressTextField;
     private JComboBox genderComboBox;
-    private JTextField birthdayTextField;
     private JTextField debitCardNumberTextField;
     private JPasswordField passwordField;
     private JCheckBox joinLoyaltyProgramCheckBox;
@@ -120,12 +119,7 @@ public class Register extends SubMenuItem {
             stmt.setString(11, address2TextField.getText());
         }
 
-        if(birthdayTextField.getText() == null || birthdayTextField.getText().isEmpty()){
-            stmt.setNull(12, Types.DATE);
-        }
-        else {
-            stmt.setString(12, birthdayTextField.getText());
-        }
+        stmt.setNull(12, Types.DATE);
 
         if(passwordField.getPassword() == null){
             stmt.setNull(13, Types.VARCHAR);

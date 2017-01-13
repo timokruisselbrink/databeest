@@ -102,11 +102,11 @@ public class MakeReservation  extends SubMenuItem {
     }
 
     public void clearScreen(){
-        startDaySpinner.setValue(1);
-        startMonthComboBox.setSelectedIndex(1);
+        startDaySpinner.setValue(10);
+        startMonthComboBox.setSelectedIndex(3);
         startYearSpinner.setValue(2017);
-        endDaySpinner.setValue(1);
-        endMonthComboBox.setSelectedIndex(1);
+        endDaySpinner.setValue(12);
+        endMonthComboBox.setSelectedIndex(3);
         endYearSpinner.setValue(2017);
 
         availableRoomsTable.setModel(new DefaultTableModel());
@@ -122,12 +122,12 @@ public class MakeReservation  extends SubMenuItem {
     public void setTestData(){
         startDaySpinner.setValue(10);
         startMonthComboBox.setSelectedIndex(3);
-        startYearSpinner.setValue(2016);
+        startYearSpinner.setValue(2017);
 
 
         endDaySpinner.setValue(12);
         endMonthComboBox.setSelectedIndex(3);
-        endYearSpinner.setValue(2016);
+        endYearSpinner.setValue(2017);
     };
 
     public void setActionListeners(){
