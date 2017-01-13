@@ -58,28 +58,31 @@ public class addFeatureMaintenance extends SubMenuItem{
     }
 
 
-    public String getFeatureTypeStartTime(String s) {
-        Connection con = getConnection();
-        PreparedStatement stmt = null;
+//    public String getFeatureTypeStartTime(String s) {
+//        Connection con = getConnection();
+//        PreparedStatement stmt = null;
+//
+//        try{
+//            stmt = con.prepareStatement("SELECT START_TIME FROM FEATURE_TYPE WHERE NAME = ?");
+//            stmt.setEscapeProcessing(true);
+//
+//            stmt.setString(1, s);
+//
+//            ResultSet rs = stmt.executeQuery();
+//
+//            while(rs.next()) {
+//                return rs.getString(1);
+//            }
+//            closeConn(con, stmt);
+//        } catch (SQLException ex) {
+//            ex.printStackTrace();
+//            JOptionPane.showMessageDialog(null, ex.getMessage());
+//        }
+//        return "1";
+//    }
 
-        try{
-            stmt = con.prepareStatement("SELECT START_TIME FROM FEATURE_TYPE WHERE NAME = ?");
-            stmt.setEscapeProcessing(true);
 
-            stmt.setString(1, s);
 
-            ResultSet rs = stmt.executeQuery();
-
-            while(rs.next()) {
-                return rs.getString(1);
-            }
-            closeConn(con, stmt);
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(null, ex.getMessage());
-        }
-        return "1";
-    }
 
     public void addFeatureMaintenance() {
         Connection con = getConnection();
@@ -89,6 +92,7 @@ public class addFeatureMaintenance extends SubMenuItem{
         String[] parts = string.split("\\|");
         String part1 = parts[0];
         int part2 = Integer.parseInt(parts[1]);
+        String part3 = parts[2];
 
 
 
@@ -109,23 +113,22 @@ public class addFeatureMaintenance extends SubMenuItem{
         }
 
         try{
-                stmt = con.prepareStatement("SP_ADD_FEATURE_MAINTENANCE ?,?,?,?,?,?,?,?,?");
+                stmt = con.prepareStatement("SP_ADD_FEATURE_MAINTENANCE ?,?,?,?,?,?,?");
                 stmt.setEscapeProcessing(true);
 
 
                 stmt.setString(1, part1);
                 stmt.setInt(2, part2);
-                stmt.setString(3, "Midden-Nederland");
-                stmt.setString(4, getFeatureTypeStartTime(part1));
-                stmt.setDate(5, startDate);
+                //stmt.setString(3, "Midden-Nederland");
+                stmt.setString(3, part3);
+                stmt.setDate(4, startDate);
             if(endDate == null){
-                stmt.setNull(6, Types.DATE);
+                stmt.setNull(5, Types.DATE);
             }else {
-                stmt.setDate(6, endDate);
+                stmt.setDate(5, endDate);
             }
-                stmt.setString(7, txtReasonFeatureMaintenance.getText());
-                stmt.setBoolean(8, false);
-                stmt.setInt(9, UserRoles.getInstance().getUserId());
+                stmt.setString(6, txtReasonFeatureMaintenance.getText());
+                stmt.setInt(7, UserRoles.getInstance().getUserId());
 
                 stmt.execute();
 
@@ -144,7 +147,7 @@ public class addFeatureMaintenance extends SubMenuItem{
         PreparedStatement stmt = null;
 
         try{
-            stmt = con.prepareStatement("SELECT FEATURE_TYPE_NAME, SEQ_NO FROM FEATURE WHERE IS_DELETED <> 1");
+            stmt = con.prepareStatement("SELECT FEATURE_TYPE_NAME, SEQ_NO, FEATURE_TYPE_START_TIME FROM FEATURE WHERE IS_DELETED <> 1");
             stmt.setEscapeProcessing(true);
 
 
@@ -155,8 +158,9 @@ public class addFeatureMaintenance extends SubMenuItem{
             while(rs.next()) {
                 String Feature_Type_Name = rs.getString(1);
                 String Feature_Seq_No = rs.getString(2);
+                String Feature_Start_Time = rs.getString(3);
 
-                cmbFeatureTypeNameForMaintenance.addItem(Feature_Type_Name + "|" + Feature_Seq_No);
+                cmbFeatureTypeNameForMaintenance.addItem(Feature_Type_Name + "|" + Feature_Seq_No + "|" + Feature_Start_Time);
             }
             closeConn(con, stmt);
 

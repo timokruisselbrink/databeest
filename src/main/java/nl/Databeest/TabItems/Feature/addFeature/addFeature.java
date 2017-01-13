@@ -23,6 +23,7 @@ public class addFeature extends SubMenuItem{
     private JTextField txtFeatureAddName;
     private JButton btnAddFeature;
     private JComboBox cmbAddFeature;
+    private JButton btnRefreshFeatureType;
     private JTextField txtFeatureTypePrice;
 
     public addFeature() {
@@ -33,10 +34,18 @@ public class addFeature extends SubMenuItem{
             @Override
             public void actionPerformed(ActionEvent e) {
                 addFeature();
-
-
             }
         });
+        btnRefreshFeatureType.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                refresh();
+            }
+        });
+    }
+
+    private void refresh() {
+        getFeatureTypeName();
     }
 
     @Override
