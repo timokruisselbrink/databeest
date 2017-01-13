@@ -100,7 +100,7 @@ public class Login extends SubMenuItem {
                 mainPanel.setLayout(new BorderLayout());
 
                 mainPanel.add(new JLabel(
-                        "Welcome back, " + rs.getString("FIRST_NAME") + " " + rs.getString("LAST_NAME_AFFIX") + " " + rs.getString("LAST_NAME")
+                        "Welcome back, " + rs.getString("FIRST_NAME") + " " + rs.getString("LAST_NAME")
                 ), BorderLayout.NORTH);
 
                 ammountOfLoyaltyPoints = rs.getInt("LOYALTY_POINTS");
