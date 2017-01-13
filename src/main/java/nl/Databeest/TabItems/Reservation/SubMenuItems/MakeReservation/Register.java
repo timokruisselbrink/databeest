@@ -25,6 +25,7 @@ public class Register extends SubMenuItem {
     private JTextField birthdayTextField;
     private JTextField debitCardNumberTextField;
     private JPasswordField passwordField;
+    private JCheckBox joinLoyaltyProgramCheckBox;
 
     private PasswordAuthentication passwordAuthentication = new PasswordAuthentication();
 
@@ -44,7 +45,7 @@ public class Register extends SubMenuItem {
     }
 
     public int getGuestId(Connection con) throws SQLException {
-        PreparedStatement stmt = con.prepareStatement("EXEC SP_REGISTER_GUEST ?,?,?,?,?,?,?,?,?,?,?,?,?");
+        PreparedStatement stmt = con.prepareStatement("EXEC SP_REGISTER_GUEST ?,?,?,?,?,?,?,?,?,?,?,?,?,?");
         stmt.setEscapeProcessing(true);
 
         if(firstNameTextField.getText() == null || firstNameTextField.getText().isEmpty()){
@@ -132,6 +133,8 @@ public class Register extends SubMenuItem {
         else {
             stmt.setString(13, passwordAuthentication.hash(passwordField.getPassword()));
         }
+
+        stmt.setBoolean(14, joinLoyaltyProgramCheckBox.isSelected());
 
         ResultSet rs = stmt.executeQuery();
 

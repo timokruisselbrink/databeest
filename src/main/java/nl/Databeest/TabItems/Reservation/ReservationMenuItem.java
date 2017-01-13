@@ -18,7 +18,7 @@ public class ReservationMenuItem  extends MenuItem {
     protected ArrayList<SubMenuItem> getMenuItems() {
         ArrayList<SubMenuItem> subMenuItems = new ArrayList<SubMenuItem>();
 
-        if(RoleHelper.isCreator()){
+        if(RoleHelper.isCreator() || RoleHelper.isGuest()){
             subMenuItems.add(new MakeReservation());
         }
         if(RoleHelper.isDeleter()){
