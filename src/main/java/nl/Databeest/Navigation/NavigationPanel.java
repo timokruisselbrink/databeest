@@ -21,6 +21,8 @@ public class NavigationPanel extends JPanel {
     public NavigationPanel() {
         createTabs();
     }
+    
+    private JTabbedPane tabbedPane = new JTabbedPane();
 
     private void createTabs(){
         JTabbedPane tabbedPane = new JTabbedPane();
