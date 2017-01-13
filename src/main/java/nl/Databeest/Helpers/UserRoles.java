@@ -19,6 +19,8 @@ public class UserRoles {
 
     private int userId;
 
+    private boolean isGuest = false;
+
     private ArrayList<String> roles;
 
     public ArrayList<String> getRoles() {
@@ -35,5 +37,13 @@ public class UserRoles {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public boolean isGuest() {
+        return isGuest;
+    }
+
+    public void setGuest(boolean guest) {
+        isGuest = guest;
     }
 }

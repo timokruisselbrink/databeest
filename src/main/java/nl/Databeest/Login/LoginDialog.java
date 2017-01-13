@@ -21,7 +21,9 @@ public class LoginDialog extends JDialog{
     private JLabel lbPassword;
     private JButton btnLogin;
     private JButton btnCancel;
+    private JButton btnAsGuest;
     private boolean succeeded;
+    private boolean asGuest = false;
 
     private ArrayList<String> roles;
 
@@ -112,6 +114,7 @@ public class LoginDialog extends JDialog{
                 }
             }
         });
+
         btnCancel = new JButton("Cancel");
         btnCancel.addActionListener(new ActionListener() {
 
@@ -119,9 +122,22 @@ public class LoginDialog extends JDialog{
                 dispose();
             }
         });
+
+        btnAsGuest = new JButton("As Guest");
+        btnAsGuest.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                asGuest = true;
+                succeeded = true;
+                dispose();
+            }
+        });
+
         JPanel bp = new JPanel();
         bp.add(btnLogin);
+        bp.add(btnAsGuest);
         bp.add(btnCancel);
+
 
         getContentPane().add(panel, BorderLayout.CENTER);
         getContentPane().add(bp, BorderLayout.PAGE_END);
@@ -169,5 +185,9 @@ public class LoginDialog extends JDialog{
 
     public int getUserId() {
         return userId;
+    }
+
+    public boolean isAsGuest() {
+        return asGuest;
     }
 }

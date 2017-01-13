@@ -8,30 +8,34 @@ import java.util.ArrayList;
 public class RoleHelper {
 
     public static boolean isEditor(){
-        if(UserRoles.getInstance().getRoles().contains("Editor")){
+        if(!isGuest() && UserRoles.getInstance().getRoles().contains("Editor")){
             return true;
         }
         return false;
     }
 
     public static boolean isCreator(){
-        if(UserRoles.getInstance().getRoles().contains("Creator")){
+        if(!isGuest() && UserRoles.getInstance().getRoles().contains("Creator")){
             return true;
         }
         return false;
     }
 
     public static boolean isDisplayer(){
-        if(UserRoles.getInstance().getRoles().contains("Displayer")){
+        if(!isGuest() && UserRoles.getInstance().getRoles().contains("Displayer")){
             return true;
         }
         return false;
     }
 
     public static boolean isDeleter(){
-        if(UserRoles.getInstance().getRoles().contains("Deleter")){
+        if(!isGuest() && UserRoles.getInstance().getRoles().contains("Deleter")){
             return true;
         }
         return false;
+    }
+
+    public static boolean isGuest(){
+        return UserRoles.getInstance().isGuest();
     }
 }
