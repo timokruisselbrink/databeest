@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="nl.Databeest.TabItems.Room.Index.Index">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="nl.Databeest.TabItems.Facility.removeFacility.removeFacility">
   <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
@@ -8,31 +8,28 @@
     <properties/>
     <border type="none"/>
     <children>
-      <component id="46eb8" class="javax.swing.JLabel">
+      <component id="63da2" class="javax.swing.JLabel">
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <font size="18"/>
-          <text value="Room index"/>
+          <text value="Facility Index"/>
         </properties>
       </component>
-      <scrollpane id="4c4ab">
+      <scrollpane id="ca811">
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
         <border type="none"/>
         <children>
-          <component id="a29fe" class="javax.swing.JTable" binding="roomIndexTable">
+          <component id="d74fd" class="javax.swing.JTable" binding="tblFacilityIndex">
             <constraints/>
-            <properties>
-              <autoCreateRowSorter value="true"/>
-            </properties>
+            <properties/>
           </component>
         </children>
       </scrollpane>
-      <component id="24a30" class="javax.swing.JButton" binding="btnRefreshRooms">
+      <component id="c451e" class="javax.swing.JButton" binding="btnRefreshFacility">
         <constraints>
           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>

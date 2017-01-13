@@ -56,7 +56,7 @@ public class createFeatureType extends SubMenuItem{
             if(txtFeatureTypePrice.getText()==null||txtFeatureTypePrice.getText().isEmpty()){
                 throw new SQLException("feature price can not be null");
             }
-            stmt = con.prepareStatement("SP_CREATE_FEATURE_TYPE ?,?,?,?");
+            stmt = con.prepareStatement("SP_ADD_FEATURE_TYPE ?,?,?,?");
             stmt.setEscapeProcessing(true);
 
             stmt.setString(1, txtFeatureTypeName.getText());

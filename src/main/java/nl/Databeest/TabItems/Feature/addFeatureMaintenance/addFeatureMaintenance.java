@@ -27,6 +27,7 @@ public class addFeatureMaintenance extends SubMenuItem{
     private JComboBox endMonthComboBox;
     private JSpinner endYearSpinner;
     private JTextField txtReasonFeatureMaintenance;
+    private JButton btnRefreshAddFeatureMaintenance;
 
     private final String[] MONTHS = new String[]{"January","February","March","April","May","June","July","August","September","October","November","December"};
 
@@ -43,6 +44,12 @@ public class addFeatureMaintenance extends SubMenuItem{
             public void actionPerformed(ActionEvent e) {
                 addFeatureMaintenance();
 
+            }
+        });
+        btnRefreshAddFeatureMaintenance.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                refreshAddFeatureMaintenance();
             }
         });
     }
@@ -80,6 +87,14 @@ public class addFeatureMaintenance extends SubMenuItem{
         }
         return "1";
     }
+
+    public void refreshAddFeatureMaintenance(){
+        cmbFeatureTypeNameForMaintenance.removeAllItems();
+        getRoomTypeNameAndFeatureSeqNo();
+
+    }
+
+
 
     public void addFeatureMaintenance() {
         Connection con = getConnection();

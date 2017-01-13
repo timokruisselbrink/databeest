@@ -47,6 +47,8 @@ public class removeFeatureMaintenance extends SubMenuItem{
     private void featureMaintenanceRefresh() {
         setTable();
     }
+
+
     public void getRoomTypeNameAndFeatureSeqNoFromMaintenance() {
         Connection con = getConnection();
         PreparedStatement stmt = null;
