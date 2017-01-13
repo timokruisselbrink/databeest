@@ -24,22 +24,49 @@ public class NavigationPanel extends JPanel {
     
     private JTabbedPane tabbedPane = new JTabbedPane();
 
-    private void createTabs(){
-        JTabbedPane tabbedPane = new JTabbedPane();
-
-        tabbedPane.addTab("Receptionist",  new ReservationMenuItem());
-        tabbedPane.add("Feature", new FeatureTab());
-        tabbedPane.add("Room", new RoomTab());
-        tabbedPane.add("Specification", new SpecificationTab());
-        tabbedPane.add("Room of Partner", new PartnerRoomTabs());
-        tabbedPane.add("Facility", new facilityTabs());
-
-
-        //Add the tabbed pane to this panel.
-        add(tabbedPane);
-
-        //The following line enables to use scrolling tabs.
-        tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+     private void createTabs(){
+ 
+         setLayout(new BorderLayout());
+ 
+         JButton refreshApp = new JButton("Refresh");
+         refreshApp.addActionListener(new ActionListener() {
+ 
+             public void actionPerformed(ActionEvent e) {
+                 createApp();
+             }
+         });
+ 
+         add(refreshApp, BorderLayout.NORTH );
+ 
+ 
+ 
+         //Add the tabbed pane to this panel.
+         add(tabbedPane, BorderLayout.CENTER);
+ 
+         //The following line enables to use scrolling tabs.
+         tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+ 
+         createApp();
+ 
+     }
+ 
+     private void createApp(){
+         tabbedPane.removeAll();
+         JTabbedPane tabbedPane = new JTabbedPane();
+  
+          tabbedPane.addTab("Receptionist",  new ReservationMenuItem());
+          tabbedPane.add("Feature", new FeatureTab());
+          tabbedPane.add("Room", new RoomTab());
+          tabbedPane.add("Specification", new SpecificationTab());
+          tabbedPane.add("Room of Partner", new PartnerRoomTabs());
+         tabbedPane.add("Facility", new facilityTabs());
+  
+ 
+         //Add the tabbed pane to this panel.
+         add(tabbedPane);
+ 
+         //The following line enables to use scrolling tabs.
+         tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
     }
 
 
