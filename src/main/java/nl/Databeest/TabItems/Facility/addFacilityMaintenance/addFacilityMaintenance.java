@@ -76,8 +76,6 @@ public class addFacilityMaintenance extends SubMenuItem{
         Connection con = getConnection();
         PreparedStatement stmt = null;
 
-        String facilityName = cmbAddFacilityMaintenance.getSelectedItem().toString();
-
         Date startDate = DateHelper.createSqlDate(
                 startDaySpinner.getValue().toString(),
                 startMonthComboBox.getSelectedIndex(),
@@ -94,15 +92,22 @@ public class addFacilityMaintenance extends SubMenuItem{
         }
 
         try{
-            stmt = con.prepareStatement("SP_INSERT_FACILITY_MAINTENANCE ?,?,?,?,?");
+            stmt = con.prepareStatement("SP_INSERT_FACILITY_MAINTENANCE ?,?,?,?,?,?");
             stmt.setEscapeProcessing(true);
 
 
-            stmt.setString(1, facilityName);
+            String string = cmbAddFacilityMaintenance.getSelectedItem().toString();;
+            String[] parts = string.split("\\|");
+            String part1 = parts[0];
+            String part2 = parts[1];
+
+
+            stmt.setString(1, part1);
             stmt.setDate(2, startDate);
             stmt.setDate(3, endDate);
             stmt.setString(4, txtAddFacilityMaintenanceReason.getText());
             stmt.setInt(5, UserRoles.getInstance().getUserId());
+            stmt.setString(6, part2);
 
             stmt.execute();
 
@@ -122,7 +127,7 @@ public class addFacilityMaintenance extends SubMenuItem{
         PreparedStatement stmt = null;
 
         try{
-            stmt = con.prepareStatement("SELECT NAME FROM FACILITY WHERE IS_DELETED <> 1");
+            stmt = con.prepareStatement("SELECT NAME, START_TIME FROM FACILITY WHERE IS_DELETED <> 1");
             stmt.setEscapeProcessing(true);
 
 
@@ -132,8 +137,9 @@ public class addFacilityMaintenance extends SubMenuItem{
 
             while(rs.next()) {
                 String facilityName = rs.getString(1);
+                String start_time = rs.getString(2);
 
-                cmbAddFacilityMaintenance.addItem(facilityName);
+                cmbAddFacilityMaintenance.addItem(facilityName + "|" + start_time);
             }
             closeConn(con, stmt);
 

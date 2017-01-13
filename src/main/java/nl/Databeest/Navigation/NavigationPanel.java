@@ -52,7 +52,6 @@ public class NavigationPanel extends JPanel {
  
      private void createApp(){
          tabbedPane.removeAll();
-         JTabbedPane tabbedPane = new JTabbedPane();
   
           tabbedPane.addTab("Receptionist",  new ReservationMenuItem());
           tabbedPane.add("Feature", new FeatureTab());

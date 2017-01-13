@@ -83,11 +83,15 @@ public class addRoomMaintenance extends SubMenuItem{
                 startYearSpinner.getValue().toString()
         );
 
-        Date endDate = DateHelper.createSqlDate(
-                endDaySpinner.getValue().toString(),
-                endMonthComboBox.getSelectedIndex(),
-                endYearSpinner.getValue().toString()
-        );
+        Date endDate = null;
+        if (endMonthComboBox.getSelectedIndex() != 0) {
+            endDate = DateHelper.createSqlDate(
+                    endDaySpinner.getValue().toString(),
+                    endMonthComboBox.getSelectedIndex(),
+                    endYearSpinner.getValue().toString()
+            );
+        }
+
 
 
         try{
@@ -97,7 +101,12 @@ public class addRoomMaintenance extends SubMenuItem{
 
             stmt.setInt(1, roomID);
             stmt.setDate(2, startDate);
-            stmt.setDate(3, endDate);
+            if(endDate == null){
+                stmt.setNull(3, Types.DATE);
+            }
+            else {
+                stmt.setDate(3, endDate);
+            }
             stmt.setString(4, txtAddRoomMaintenanceReason.getText());
             stmt.setInt(5, UserRoles.getInstance().getUserId());
 
