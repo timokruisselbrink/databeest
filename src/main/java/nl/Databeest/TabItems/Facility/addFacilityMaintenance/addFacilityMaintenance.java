@@ -1,4 +1,4 @@
-package nl.Databeest.TabItems.Room.Maintenance;
+package nl.Databeest.TabItems.Facility.addFacilityMaintenance;
 
 import nl.Databeest.Helpers.DateHelper;
 import nl.Databeest.Helpers.UserRoles;
@@ -11,28 +11,52 @@ import java.awt.event.ActionListener;
 import java.sql.*;
 
 /**
- * Created by A on 20/12/2016.
+ * Created by A on 13/01/2017.
  */
-public class addRoomMaintenance extends SubMenuItem{
-    private JPanel mainPanel;
-    private JButton btnAddRoomMaintenance;
+public class addFacilityMaintenance extends SubMenuItem{
+    private JComboBox cmbAddFacilityMaintenance;
     private JPanel startDatePanel;
-    private JPanel endDatePanel;
     private JSpinner startDaySpinner;
     private JComboBox startMonthComboBox;
     private JSpinner startYearSpinner;
+    private JPanel endDatePanel;
     private JSpinner endDaySpinner;
     private JComboBox endMonthComboBox;
     private JSpinner endYearSpinner;
-    private JTextField txtAddRoomMaintenanceReason;
-    private JComboBox cmbAddRoomMaintenanceID;
-    private JButton btnRefreshRoomMaintenance;
+    private JTextField txtAddFacilityMaintenanceReason;
+    private JButton btnAddFacilityMaintenance;
+    private JPanel mainPanel;
+    private JButton btnRefreshFacilityMaintenance;
 
     private final String[] MONTHS = new String[]{"January","February","March","April","May","June","July","August","September","October","November","December"};
 
+
+
+
+    public addFacilityMaintenance() {
+        getFacilityName();
+        startMonthComboBox.addItem("");
+        endMonthComboBox.addItem("");
+        for (int i = 0; i < MONTHS.length; i++) {
+            startMonthComboBox.addItem(MONTHS[i]);
+            endMonthComboBox.addItem(MONTHS[i]);}
+        btnAddFacilityMaintenance.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {addFacilityMaintenance();
+            }
+
+        });
+        btnRefreshFacilityMaintenance.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                refreshMaintenance();
+            }
+        });
+    }
+
     @Override
     protected String getMenuItemName() {
-        return "Maintenance";
+        return "Add Facility Maintenance";
     }
 
     @Override
@@ -40,42 +64,19 @@ public class addRoomMaintenance extends SubMenuItem{
         return mainPanel;
     }
 
-    public addRoomMaintenance() {
-        getRoomID();
-        startMonthComboBox.addItem("");
-        endMonthComboBox.addItem("");
-        for (int i = 0; i < MONTHS.length; i++) {
-            startMonthComboBox.addItem(MONTHS[i]);
-            endMonthComboBox.addItem(MONTHS[i]);}
+    public void refreshMaintenance() {
+        cmbAddFacilityMaintenance.removeAllItems();
+        getFacilityName();
 
-        btnAddRoomMaintenance.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                addRoomMaintenance();
-
-            }
-        });
-
-        btnRefreshRoomMaintenance.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                refreshRoomMaintenance();
-            }
-        });
-    }
-
-    private void refreshRoomMaintenance() {
-        cmbAddRoomMaintenanceID.removeAllItems();
-        getRoomID();
     }
 
 
-    public void addRoomMaintenance() {
+
+    public void addFacilityMaintenance() {
         Connection con = getConnection();
         PreparedStatement stmt = null;
 
-
-        int roomID = (Integer) cmbAddRoomMaintenanceID.getSelectedItem();
+        String facilityName = cmbAddFacilityMaintenance.getSelectedItem().toString();
 
         Date startDate = DateHelper.createSqlDate(
                 startDaySpinner.getValue().toString(),
@@ -83,52 +84,56 @@ public class addRoomMaintenance extends SubMenuItem{
                 startYearSpinner.getValue().toString()
         );
 
-        Date endDate = DateHelper.createSqlDate(
-                endDaySpinner.getValue().toString(),
-                endMonthComboBox.getSelectedIndex(),
-                endYearSpinner.getValue().toString()
-        );
-
+        Date endDate = null;
+        if(endMonthComboBox.getSelectedIndex() != 0){
+            endDate = DateHelper.createSqlDate(
+                    endDaySpinner.getValue().toString(),
+                    endMonthComboBox.getSelectedIndex(),
+                    endYearSpinner.getValue().toString()
+            );
+        }
 
         try{
-            stmt = con.prepareStatement("SP_ADD_ROOM_MAINTENANCE ?,?,?,?,?");
+            stmt = con.prepareStatement("SP_INSERT_FACILITY_MAINTENANCE ?,?,?,?,?");
             stmt.setEscapeProcessing(true);
 
 
-            stmt.setInt(1, roomID);
+            stmt.setString(1, facilityName);
             stmt.setDate(2, startDate);
             stmt.setDate(3, endDate);
-            stmt.setString(4, txtAddRoomMaintenanceReason.getText());
+            stmt.setString(4, txtAddFacilityMaintenanceReason.getText());
             stmt.setInt(5, UserRoles.getInstance().getUserId());
 
             stmt.execute();
-            JOptionPane.showMessageDialog(null, "The room maintenance has been added successfully.", "Success!", 1);
 
+            JOptionPane.showMessageDialog(null, "The facility maintenance has been added successfully.", "Success!", 1);
             closeConn(con, stmt);
 
         } catch (SQLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
-
     }
 
-    public void getRoomID() {
+
+
+    public void getFacilityName() {
         Connection con = getConnection();
         PreparedStatement stmt = null;
 
         try{
-            stmt = con.prepareStatement("SELECT Room_ID FROM ROOM WHERE END_TIME < GETDATE()");
+            stmt = con.prepareStatement("SELECT NAME FROM FACILITY WHERE IS_DELETED <> 1");
             stmt.setEscapeProcessing(true);
 
 
             ResultSet rs = stmt.executeQuery();
 
 
-            while(rs.next()) {
-                int roomID = rs.getInt(1);
 
-                cmbAddRoomMaintenanceID.addItem(roomID);
+            while(rs.next()) {
+                String facilityName = rs.getString(1);
+
+                cmbAddFacilityMaintenance.addItem(facilityName);
             }
             closeConn(con, stmt);
 
@@ -142,6 +147,20 @@ public class addRoomMaintenance extends SubMenuItem{
 
 
     }
-
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

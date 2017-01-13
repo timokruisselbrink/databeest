@@ -27,6 +27,7 @@ public class addRoomOfPartner extends SubMenuItem {
     private JSpinner endYearSpinner;
     private JButton btnAddRoomOfPartnerButton;
     private JTextField txtRoomOfPartnerPrice;
+    private JButton btnRefreshRoomForPartnerPage;
     private final String[] MONTHS = new String[]{"January","February","March","April","May","June","July","August","September","October","November","December"};
 
     @Override
@@ -54,8 +55,20 @@ public class addRoomOfPartner extends SubMenuItem {
                 addRoomOfPartner();
             }
         });
+        btnRefreshRoomForPartnerPage.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                refreshCreateRoomPage();
+            }
+        });
     }
 
+    private void refreshCreateRoomPage() {
+        cmbRoomIdForPartnerRoom.removeAllItems();
+        cmbPartnerNameForRoom.removeAllItems();
+        getRoomId();
+        getPartnerName();
+    }
     private void getRoomId() {
         Connection con = getConnection();
         PreparedStatement stmt = null;

@@ -23,7 +23,7 @@ public class addFeature extends SubMenuItem{
     private JTextField txtFeatureAddName;
     private JButton btnAddFeature;
     private JComboBox cmbAddFeature;
-    private JButton btnRefreshFeatureType;
+    private JButton btnAddFeatureRefresh;
     private JTextField txtFeatureTypePrice;
 
     public addFeature() {
@@ -34,18 +34,16 @@ public class addFeature extends SubMenuItem{
             @Override
             public void actionPerformed(ActionEvent e) {
                 addFeature();
+
+
             }
         });
-        btnRefreshFeatureType.addActionListener(new ActionListener() {
+        btnAddFeatureRefresh.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                refresh();
+                refreshAddFeature();
             }
         });
-    }
-
-    private void refresh() {
-        getFeatureTypeName();
     }
 
     @Override
@@ -56,6 +54,11 @@ public class addFeature extends SubMenuItem{
     @Override
     protected Component getMainPanel() {
         return mainPanel;
+    }
+
+    public void refreshAddFeature() {
+        cmbAddFeature.removeAllItems();
+        getFeatureTypeName();
     }
 
     public String getFeatureTypeStartTime() {
@@ -122,7 +125,7 @@ public class addFeature extends SubMenuItem{
             while(rs.next()) {
                 return rs.getInt(1);
             }
-            closeConn(con, stmt);
+
 
 
         } catch (SQLException ex) {
