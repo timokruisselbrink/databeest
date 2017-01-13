@@ -20,7 +20,11 @@ public class Login extends SubMenuItem {
     private JPasswordField passwordField;
     private JButton loginButton;
 
+    private int ammountOfLoyaltyPoints;
+
     private int guestId;
+
+    private JTextField usedPoints = new JFormattedTextField("0");
 
     private PasswordAuthentication passwordAuthentication = new PasswordAuthentication();
 
@@ -93,11 +97,30 @@ public class Login extends SubMenuItem {
             while(rs.next())
             {
 
-                mainPanel.setLayout(new GridLayout());
+                mainPanel.setLayout(new BorderLayout());
 
                 mainPanel.add(new JLabel(
-                        "Welcome back, " + rs.getString("FIRST_NAME") + " " + rs.getString("LAST_NAME_AFFIX") + " " + rs.getString("LAST_NAME")
-                ));
+                        "Welcome back, " + rs.getString("FIRST_NAME") + " " + rs.getString("LAST_NAME")
+                ), BorderLayout.NORTH);
+
+                ammountOfLoyaltyPoints = rs.getInt("LOYALTY_POINTS");
+
+                if(rs.getBoolean("IN_LOYALTY_PROGRAM")){
+                    JPanel loyaltyPanel = new JPanel();
+                    loyaltyPanel.add(new JLabel("Amount of loyalty points: " + ammountOfLoyaltyPoints));
+
+                    JPanel holderPanel = new JPanel(new GridLayout());
+                    holderPanel.add(new JLabel("Use Loyalty points"));
+
+
+                    holderPanel.add(usedPoints);
+
+                    loyaltyPanel.add(holderPanel, BorderLayout.WEST);
+
+
+                    mainPanel.add(loyaltyPanel, BorderLayout.WEST);
+
+                }
 
                 mainPanel.revalidate();
                 mainPanel.repaint();
@@ -107,6 +130,10 @@ public class Login extends SubMenuItem {
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
+    }
+
+    public int getUseLoyaltyPoints(){
+        return Integer.parseInt(usedPoints.getText());
     }
 
     @Override
@@ -121,5 +148,9 @@ public class Login extends SubMenuItem {
 
     public int getGuestId(Connection con) throws SQLException {
         return guestId;
+    }
+
+    public int getAmmountOfLoyaltyPoints() {
+        return ammountOfLoyaltyPoints;
     }
 }

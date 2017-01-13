@@ -22,9 +22,9 @@ public class Register extends SubMenuItem {
     private JTextField address2TextField;
     private JTextField addressTextField;
     private JComboBox genderComboBox;
-    private JTextField birthdayTextField;
     private JTextField debitCardNumberTextField;
     private JPasswordField passwordField;
+    private JCheckBox joinLoyaltyProgramCheckBox;
 
     private PasswordAuthentication passwordAuthentication = new PasswordAuthentication();
 
@@ -44,7 +44,7 @@ public class Register extends SubMenuItem {
     }
 
     public int getGuestId(Connection con) throws SQLException {
-        PreparedStatement stmt = con.prepareStatement("EXEC SP_REGISTER_GUEST ?,?,?,?,?,?,?,?,?,?,?,?,?");
+        PreparedStatement stmt = con.prepareStatement("EXEC SP_REGISTER_GUEST ?,?,?,?,?,?,?,?,?,?,?,?,?,?");
         stmt.setEscapeProcessing(true);
 
         if(firstNameTextField.getText() == null || firstNameTextField.getText().isEmpty()){
@@ -119,12 +119,7 @@ public class Register extends SubMenuItem {
             stmt.setString(11, address2TextField.getText());
         }
 
-        if(birthdayTextField.getText() == null || birthdayTextField.getText().isEmpty()){
-            stmt.setNull(12, Types.DATE);
-        }
-        else {
-            stmt.setString(12, birthdayTextField.getText());
-        }
+        stmt.setNull(12, Types.DATE);
 
         if(passwordField.getPassword() == null){
             stmt.setNull(13, Types.VARCHAR);
@@ -132,6 +127,8 @@ public class Register extends SubMenuItem {
         else {
             stmt.setString(13, passwordAuthentication.hash(passwordField.getPassword()));
         }
+
+        stmt.setBoolean(14, joinLoyaltyProgramCheckBox.isSelected());
 
         ResultSet rs = stmt.executeQuery();
 

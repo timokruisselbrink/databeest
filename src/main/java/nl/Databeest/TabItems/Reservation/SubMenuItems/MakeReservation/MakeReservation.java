@@ -1,6 +1,8 @@
 package nl.Databeest.TabItems.Reservation.SubMenuItems.MakeReservation;
 
 import nl.Databeest.Helpers.DateHelper;
+import nl.Databeest.Helpers.RoleHelper;
+import nl.Databeest.Helpers.UserRoles;
 import nl.Databeest.TabItems.SubMenuItem;
 
 import javax.swing.*;
@@ -89,8 +91,10 @@ public class MakeReservation  extends SubMenuItem {
         registerPanel = new Register();
         withoutAccountPanel = new WithoutAccount();
 
-        accountTabbedPane.addTab(loginPanel.getMenuItemName(),loginPanel.getMainPanel());
-        accountTabbedPane.addTab(registerPanel.getMenuItemName(),registerPanel.getMainPanel());
+        if(RoleHelper.isGuest()) {
+            accountTabbedPane.addTab(loginPanel.getMenuItemName(), loginPanel.getMainPanel());
+            accountTabbedPane.addTab(registerPanel.getMenuItemName(), registerPanel.getMainPanel());
+        }
         accountTabbedPane.addTab(withoutAccountPanel.getMenuItemName(),withoutAccountPanel.getMainPanel());
 
         accountTabbedPane.revalidate();
@@ -98,11 +102,11 @@ public class MakeReservation  extends SubMenuItem {
     }
 
     public void clearScreen(){
-        startDaySpinner.setValue(1);
-        startMonthComboBox.setSelectedIndex(1);
+        startDaySpinner.setValue(10);
+        startMonthComboBox.setSelectedIndex(3);
         startYearSpinner.setValue(2017);
-        endDaySpinner.setValue(1);
-        endMonthComboBox.setSelectedIndex(1);
+        endDaySpinner.setValue(12);
+        endMonthComboBox.setSelectedIndex(3);
         endYearSpinner.setValue(2017);
 
         availableRoomsTable.setModel(new DefaultTableModel());
@@ -118,12 +122,12 @@ public class MakeReservation  extends SubMenuItem {
     public void setTestData(){
         startDaySpinner.setValue(10);
         startMonthComboBox.setSelectedIndex(3);
-        startYearSpinner.setValue(2016);
+        startYearSpinner.setValue(2017);
 
 
         endDaySpinner.setValue(12);
         endMonthComboBox.setSelectedIndex(3);
-        endYearSpinner.setValue(2016);
+        endYearSpinner.setValue(2017);
     };
 
     public void setActionListeners(){
@@ -206,17 +210,22 @@ public class MakeReservation  extends SubMenuItem {
 
             int guestId = -1;
 
-            switch (accountTabbedPane.getSelectedIndex())
-            {
-                case 0:
-                    guestId = loginPanel.getGuestId(con);
-                    break;
-                case 1:
-                    guestId = registerPanel.getGuestId(con);
-                    break;
-                case 2:
-                    guestId = withoutAccountPanel.getGuestId(con);
-                    break;
+            if(RoleHelper.isGuest()){
+                switch (accountTabbedPane.getSelectedIndex())
+                {
+                    case 0:
+                        guestId = loginPanel.getGuestId(con);
+                        break;
+                    case 1:
+                        guestId = registerPanel.getGuestId(con);
+                        break;
+                    case 2:
+                        guestId = withoutAccountPanel.getGuestId(con);
+                        break;
+                }
+            }
+            else {
+                guestId = withoutAccountPanel.getGuestId(con);
             }
 
             int reservationNumber = createReservation(con, guestId);
@@ -242,7 +251,7 @@ public class MakeReservation  extends SubMenuItem {
     }
 
     private void createReservationsForRooms(Connection con, int reservationNumber) throws SQLException {
-        PreparedStatement stmt = con.prepareStatement("EXEC SP_INSERT_RESERVATION_ROW ?,?,?,?,?,?");
+        PreparedStatement stmt = con.prepareStatement("EXEC SP_INSERT_RESERVATION_ROW ?,?,?,?,?,?,?");
         stmt.setEscapeProcessing(true);
 
         int seqNo = 1;
@@ -256,6 +265,12 @@ public class MakeReservation  extends SubMenuItem {
             stmt.setDouble(7, 200.00); //TODO: calculate
             stmt.setDouble(8, 200.00); //TODO: calculate*/
             stmt.setInt(6, selectedRoom.getAmountOfPersons());
+
+            if(RoleHelper.isGuest()){
+                stmt.setNull(7, Types.INTEGER);
+            }else {
+                stmt.setInt(7, UserRoles.getInstance().getUserId());
+            }
 
             stmt.execute();
 
@@ -277,13 +292,19 @@ public class MakeReservation  extends SubMenuItem {
                 "\t\t@Reservation_No = ?,\n" +
                 "\t\t@Reservation_Row_Seq_No = ?,\n" +
                 "\t\t@Start_Time = ?,\n" +
-                "\t\t@End_Time = ?");
+                "\t\t@End_Time = ?,\n" +
+                "\t\t@Last_Edit_By = ?");
         stmt.setEscapeProcessing(true);
 
         stmt.setInt(3, reservationNumber);
         stmt.setInt(4, reservationRowSequenceNumber);
         stmt.setDate(5, startDate);
         stmt.setDate(6, endDate);
+        if(RoleHelper.isGuest()){
+            stmt.setNull(7, Types.INTEGER);
+        }else {
+            stmt.setInt(7, UserRoles.getInstance().getUserId());
+        }
 
         for (SelectedFeatureModel model: room.getSelectedFeatures()) {
             stmt.setString(1, model.getFeatureTypeName());
@@ -298,11 +319,24 @@ public class MakeReservation  extends SubMenuItem {
     }
 
     private int createReservation(Connection con, int guestId) throws SQLException {
-        PreparedStatement stmt = con.prepareStatement("EXEC SP_INSERT_RESERVATION ?,?");
+        PreparedStatement stmt = con.prepareStatement("EXEC SP_INSERT_RESERVATION ?,?,?,?");
         stmt.setEscapeProcessing(true);
 
         stmt.setString(1, "Direct");
         stmt.setInt(2, guestId);
+
+        if(RoleHelper.isGuest()){
+            stmt.setNull(3, Types.INTEGER);
+        }else {
+            stmt.setInt(3, UserRoles.getInstance().getUserId());
+        }
+
+        if(RoleHelper.isGuest() && accountTabbedPane.getSelectedIndex() == 0){
+            stmt.setInt(4, loginPanel.getUseLoyaltyPoints());
+        }
+        else {
+            stmt.setInt(4, 0);
+        }
 
 
         ResultSet rs = stmt.executeQuery();
