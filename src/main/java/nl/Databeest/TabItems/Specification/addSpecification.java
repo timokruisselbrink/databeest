@@ -2,6 +2,7 @@ package nl.Databeest.TabItems.Specification;
 
 import microsoft.sql.Types;
 import nl.Databeest.Helpers.DateHelper;
+import nl.Databeest.Helpers.UserRoles;
 import nl.Databeest.TabItems.SubMenuItem;
 
 import javax.swing.*;
@@ -50,12 +51,13 @@ public class addSpecification extends SubMenuItem {
 
 
         try{
-            stmt = con.prepareStatement("SP_CREATE_SPECIFICATION ?,?");
+            stmt = con.prepareStatement("SP_CREATE_SPECIFICATION ?,?,?");
             stmt.setEscapeProcessing(true);
 
 
             stmt.setString(1, txtAddSpecificationName.getText());
             stmt.setFloat(2, Float.parseFloat(txtAddSpecificationPrice.getText()));
+            stmt.setInt(3, UserRoles.getInstance().getUserId());
 
             stmt.execute();
             JOptionPane.showMessageDialog(null, "The specification has been added successfully.", "Success!", 1);

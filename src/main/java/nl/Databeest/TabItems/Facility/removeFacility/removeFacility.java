@@ -1,4 +1,4 @@
-package nl.Databeest.TabItems.Specification.Index;
+package nl.Databeest.TabItems.Facility.removeFacility;
 
 import nl.Databeest.Helpers.JTableButtonMouseListener;
 import nl.Databeest.Helpers.JTableButtonRenderer;
@@ -13,17 +13,27 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- * Created by A on 20/12/2016.
+ * Created by A on 13/01/2017.
  */
-public class Index extends SubMenuItem {
+public class removeFacility extends SubMenuItem{
+    private JTable tblFacilityIndex;
     private JPanel mainPanel;
-    private JTable tblSpecifications;
-    private JButton btnRefreshSpecification;
+    private JButton btnRefreshFacility;
+
+    public removeFacility() {
+        setTable();
+
+        btnRefreshFacility.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                facilityRefresh();
+            }
+        });
+    }
 
     @Override
     protected String getMenuItemName() {
@@ -35,43 +45,31 @@ public class Index extends SubMenuItem {
         return mainPanel;
     }
 
-    public Index(){
-        setTable();
-        btnRefreshSpecification.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                refreshSpecification();
-            }
-        });
-    }
-
-    private void refreshSpecification() {
-        setTable();
-    }
     private void setTable(){
-        getSpecifications();
+        getFacilities();
 
         if(RoleHelper.isDeleter()) {
             TableCellRenderer buttonRenderer = new JTableButtonRenderer();
-            tblSpecifications.getColumn("Delete").setCellRenderer(buttonRenderer);
-            tblSpecifications.addMouseListener(new JTableButtonMouseListener(tblSpecifications));
+            tblFacilityIndex.getColumn("Delete").setCellRenderer(buttonRenderer);
+            tblFacilityIndex.addMouseListener(new JTableButtonMouseListener(tblFacilityIndex));
         }
     }
 
-    private void getSpecifications(){
+    private void facilityRefresh() {setTable();}
+
+    private void getFacilities() {
         Connection con = getConnection();
         PreparedStatement stmt = null;
 
-
         try {
-            stmt = con.prepareStatement("SELECT NAME, START_TIME, PRICE FROM SPECIFICATION WHERE END_TIME IS NULL");
+            stmt = con.prepareStatement("SELECT [NAME] AS 'Facility Name', START_TIME AS 'Start Time' FROM FACILITY WHERE IS_DELETED <> 1 ");
             stmt.setEscapeProcessing(true);
 
-            tblSpecifications.setModel(new IndexAbstractTableModel(stmt.executeQuery()) {
+            tblFacilityIndex.setModel(new IndexAbstractTableModel(stmt.executeQuery()) {
                 @Override
                 public void deleteRow(Object[] row) {
-                        deleteFeature((String)row[0],(String)row[1]);
-                    }
+                    deleteFacilities((String)row[0], (String) row[1]);
+                }
             });
 
             closeConn(con, stmt);
@@ -81,27 +79,30 @@ public class Index extends SubMenuItem {
         }
     }
 
-    private void deleteFeature(String name, String start_time){
+
+
+    private void deleteFacilities(String facilityName, String facilityStartDate) {
         Connection con = getConnection();
         PreparedStatement stmt = null;
 
-
         try {
-            stmt = con.prepareStatement("EXEC SP_DELETE_SPECIFICATION ?,?,?");
+            stmt = con.prepareStatement("EXEC SP_DELETE_FACILITY ?,?,?");
             stmt.setEscapeProcessing(true);
 
-            stmt.setString(1, name);
-            stmt.setString(2, start_time);
+            stmt.setString(1, facilityName);
+            stmt.setString(2, facilityStartDate);
             stmt.setInt(3, UserRoles.getInstance().getUserId());
 
             stmt.execute();
+            JOptionPane.showMessageDialog(null, "The facility has been successfully removed.", "Success!", 1);
 
             closeConn(con, stmt);
         } catch (SQLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
-
         setTable();
     }
+
+
 }

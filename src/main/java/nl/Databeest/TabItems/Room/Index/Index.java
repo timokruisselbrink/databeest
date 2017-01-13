@@ -7,6 +7,8 @@ import nl.Databeest.TabItems.SubMenuItem;
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -17,6 +19,7 @@ import java.sql.SQLException;
 public class Index extends SubMenuItem{
     private JPanel mainPanel;
     private JTable roomIndexTable;
+    private JButton btnRefreshRooms;
 
     @Override
     protected String getMenuItemName() {
@@ -30,6 +33,12 @@ public class Index extends SubMenuItem{
 
     public Index(){
         setTable();
+        btnRefreshRooms.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                refreshRooms();
+            }
+        });
     }
 
     private void setTable(){
@@ -40,6 +49,10 @@ public class Index extends SubMenuItem{
             roomIndexTable.getColumn("Delete").setCellRenderer(buttonRenderer);
             roomIndexTable.addMouseListener(new JTableButtonMouseListener(roomIndexTable));
         }
+    }
+
+    private void refreshRooms() {
+        setTable();
     }
 
     public void getRooms() {

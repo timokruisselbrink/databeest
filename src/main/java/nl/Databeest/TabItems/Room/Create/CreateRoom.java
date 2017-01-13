@@ -4,6 +4,7 @@ import nl.Databeest.Helpers.UserRoles;
 import nl.Databeest.TabItems.SubMenuItem;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,6 +25,7 @@ public class CreateRoom extends SubMenuItem {
     private JButton btnAddRoom;
     private JComboBox floorComboBox;
     private JTable optionalFeaturesTable;
+    private JButton btnRefreshCreateRoom;
 
     ArrayList<String> selectedSpecifications = new ArrayList<String>();
 
@@ -45,30 +47,8 @@ public class CreateRoom extends SubMenuItem {
     public CreateRoom() {
         getRoomTypes();
         getFloors();
-        Connection con = getConnection();
+        setTables();
 
-        try {
-            featureTableModel = new selectFeatureAbstractTableModel(getFeatures(con));
-
-            specificationsTable.setModel(new selectSpecificationAbstractTableModel(getSpecifications(con)) {
-                @Override
-                public void addSelectedSpecification(String name) {
-                     selectedSpecifications.add(name);
-                }
-
-                @Override
-                public void removeSelectedSpecification(String name) {
-                    selectedSpecifications.remove(name);
-                }
-            });
-
-            con.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, e.getMessage());
-        }
-
-        optionalFeaturesTable.setModel(featureTableModel);
 
         btnAddRoom.addActionListener(new ActionListener() {
             @Override
@@ -100,8 +80,48 @@ public class CreateRoom extends SubMenuItem {
                 }
             }
         });
+        btnRefreshCreateRoom.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                refreshCreateRoomPage();
+            }
+        });
     }
+    private void setTables() {
+        Connection con = getConnection();
 
+        try {
+            featureTableModel = new selectFeatureAbstractTableModel(getFeatures(con));
+
+            specificationsTable.setModel(new selectSpecificationAbstractTableModel(getSpecifications(con)) {
+                @Override
+                public void addSelectedSpecification(String name) {
+                    selectedSpecifications.add(name);
+                }
+
+                @Override
+                public void removeSelectedSpecification(String name) {
+                    selectedSpecifications.remove(name);
+                }
+            });
+
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+
+        optionalFeaturesTable.setModel(featureTableModel);
+    }
+    private void refreshCreateRoomPage() {
+
+        roomTypeComboBox.removeAllItems();
+        floorComboBox.removeAllItems();
+
+        getRoomTypes();
+        getFloors();
+        setTables();
+    }
     public int insertRoom(Connection con) throws SQLException {
 
         PreparedStatement stmt = null;
@@ -149,12 +169,12 @@ public class CreateRoom extends SubMenuItem {
         PreparedStatement stmt = con.prepareStatement("SP_ADD_SPECIFICATION_FOR_ROOM ?,?,?");
         stmt.setEscapeProcessing(true);
         stmt.setInt(1, roomId);
+        stmt.setInt(3, UserRoles.getInstance().getUserId());
 
         for(int i = 0; i<selectedSpecifications.size(); i++) {
                 stmt.setString(2, selectedSpecifications.get(i).toString());
                 stmt.execute();
         }
-        stmt.setInt(3, UserRoles.getInstance().getUserId());
         stmt.close();
 
     }
@@ -168,6 +188,7 @@ public class CreateRoom extends SubMenuItem {
             stmt = con.prepareStatement("SP_ADD_FEATURE_TO_ROOM ?,?,?,?");
             stmt.setEscapeProcessing(true);
             stmt.setInt(2, roomId);
+            stmt.setInt(4, UserRoles.getInstance().getUserId());
 
             for (SelectedFeatureModel selectedFeature: selectedFeatures) {
                 stmt.setString(1, selectedFeature.getName());
@@ -175,7 +196,6 @@ public class CreateRoom extends SubMenuItem {
 
                 stmt.execute();
             }
-             stmt.setInt(4, UserRoles.getInstance().getUserId());
             stmt.close();
     }
 
