@@ -13,6 +13,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -63,13 +64,13 @@ public class Index extends SubMenuItem {
 
 
         try {
-            stmt = con.prepareStatement("SELECT NAME, PRICE FROM SPECIFICATION WHERE END_TIME IS NULL");
+            stmt = con.prepareStatement("SELECT NAME, START_TIME, PRICE FROM SPECIFICATION WHERE END_TIME IS NULL");
             stmt.setEscapeProcessing(true);
 
             tblSpecifications.setModel(new IndexAbstractTableModel(stmt.executeQuery()) {
                 @Override
                 public void deleteRow(Object[] row) {
-                        deleteFeature((String)row[0]);
+                        deleteFeature((String)row[0],(String)row[1]);
                     }
             });
 
@@ -80,17 +81,18 @@ public class Index extends SubMenuItem {
         }
     }
 
-    private void deleteFeature(String name){
+    private void deleteFeature(String name, String start_time){
         Connection con = getConnection();
         PreparedStatement stmt = null;
 
 
         try {
-            stmt = con.prepareStatement("EXEC SP_DELETE_SPECIFICATION ?,?");
+            stmt = con.prepareStatement("EXEC SP_DELETE_SPECIFICATION ?,?,?");
             stmt.setEscapeProcessing(true);
 
             stmt.setString(1, name);
-            stmt.setInt(2, UserRoles.getInstance().getUserId());
+            stmt.setString(2, start_time);
+            stmt.setInt(3, UserRoles.getInstance().getUserId());
 
             stmt.execute();
 
