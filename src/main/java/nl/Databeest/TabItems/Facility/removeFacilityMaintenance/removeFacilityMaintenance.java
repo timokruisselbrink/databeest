@@ -51,7 +51,7 @@ public class removeFacilityMaintenance extends SubMenuItem{
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement("SELECT FACILITY_NAME, ESTABLISHMENT_NAME, START_TIME FROM FACILITY_MAINTENANCE WHERE IS_CANCELLED <> 1");
+            stmt = con.prepareStatement("SELECT FACILITY.NAME, ESTABLISHMENT_NAME, FACILITY_MAINTENANCE.START_TIME FROM FACILITY_MAINTENANCE INNER JOIN FACILITY on FACILITY.FACILITY_ID = FACILITY_MAINTENANCE.FACILITY_ID WHERE IS_CANCELLED <> 1");
             stmt.setEscapeProcessing(true);
 
 

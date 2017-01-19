@@ -62,7 +62,7 @@ public class removeFacility extends SubMenuItem{
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement("SELECT [NAME] AS 'Facility Name', START_TIME AS 'Start Time' FROM FACILITY WHERE IS_DELETED <> 1 ");
+            stmt = con.prepareStatement("SELECT [NAME] AS 'Facility Name', START_TIME AS 'Start Time' FROM FACILITY WHERE END_TIME IS NULL");
             stmt.setEscapeProcessing(true);
 
             tblFacilityIndex.setModel(new IndexAbstractTableModel(stmt.executeQuery()) {

@@ -249,7 +249,7 @@ public class CreateRoom extends SubMenuItem {
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement("SELECT DISTINCT FLOOR_NO FROM ROOM");
+            stmt = con.prepareStatement("SELECT FLOOR_ID  FROM FLOOR WHERE END_TIME IS NULL");
             stmt.setEscapeProcessing(true);
 
             ResultSet rs = stmt.executeQuery();

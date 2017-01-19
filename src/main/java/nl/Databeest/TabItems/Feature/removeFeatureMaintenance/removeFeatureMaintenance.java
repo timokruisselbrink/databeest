@@ -53,7 +53,7 @@ public class removeFeatureMaintenance extends SubMenuItem{
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement("SELECT FEATURE_TYPE_NAME, FEATURE_SEQ_NO, START_TIME FROM FEATURE_MAINTENANCE WHERE IS_CANCELLED <> 1");
+            stmt = con.prepareStatement("SELECT FEATURE_TYPE.NAME, FEATURE_SEQ_NO FROM FEATURE_MAINTENANCE INNER JOIN FEATURE_TYPE ON FEATURE_MAINTENANCE.FEATURE_TYPE_ID = FEATURE_TYPE.FEATURE_TYPE_ID WHERE IS_CANCELLED <> 1");
             stmt.setEscapeProcessing(true);
 
 

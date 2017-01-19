@@ -162,7 +162,7 @@ public class addFeatureMaintenance extends SubMenuItem{
         PreparedStatement stmt = null;
 
         try{
-            stmt = con.prepareStatement("SELECT FEATURE_TYPE_NAME, SEQ_NO, FEATURE_TYPE_START_TIME FROM FEATURE WHERE IS_DELETED <> 1");
+            stmt = con.prepareStatement("SELECT FEATURE_TYPE.NAME, SEQ_NO, FEATURE.FEATURE_TYPE_ID FROM FEATURE INNER JOIN FEATURE_TYPE ON FEATURE.FEATURE_TYPE_ID = FEATURE_TYPE.FEATURE_TYPE_ID WHERE IS_DELETED <> 1");
             stmt.setEscapeProcessing(true);
 
 
@@ -173,9 +173,9 @@ public class addFeatureMaintenance extends SubMenuItem{
             while(rs.next()) {
                 String Feature_Type_Name = rs.getString(1);
                 String Feature_Seq_No = rs.getString(2);
-                String Feature_Start_Time = rs.getString(3);
+                String Feature_Type_Id = rs.getString(2);
 
-                cmbFeatureTypeNameForMaintenance.addItem(Feature_Type_Name + "|" + Feature_Seq_No + "|" + Feature_Start_Time);
+                cmbFeatureTypeNameForMaintenance.addItem(Feature_Type_Name + "|" + Feature_Seq_No + "|" + Feature_Type_Id);
             }
             closeConn(con, stmt);
 

@@ -61,7 +61,7 @@ public class Index extends SubMenuItem{
 
 
         try {
-            stmt = con.prepareStatement("SELECT ROOM_ID, ROOM_NO, ROOM_TYPE_NAME FROM ROOM  WHERE ROOM.END_TIME IS NULL");
+            stmt = con.prepareStatement("SELECT ROOM_ID, ROOM_NO, ROOM_TYPE.NAME FROM ROOM INNER JOIN ROOM_TYPE ON ROOM_TYPE.ROOM_TYPE_ID = ROOM.ROOM_TYPE_ID  WHERE ROOM.END_TIME IS NULL");
             stmt.setEscapeProcessing(true);
 
             roomIndexTable.setModel(new IndexAbstractTableModel(stmt.executeQuery()) {

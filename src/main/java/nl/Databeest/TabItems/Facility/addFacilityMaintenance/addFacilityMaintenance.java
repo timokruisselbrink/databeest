@@ -127,7 +127,7 @@ public class addFacilityMaintenance extends SubMenuItem{
         PreparedStatement stmt = null;
 
         try{
-            stmt = con.prepareStatement("SELECT NAME, START_TIME FROM FACILITY WHERE IS_DELETED <> 1");
+            stmt = con.prepareStatement("SELECT NAME, START_TIME FROM FACILITY WHERE END_TIME IS NULL");
             stmt.setEscapeProcessing(true);
 
 
