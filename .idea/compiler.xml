@@ -16,7 +16,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="databeest" target="1.5" />
+      <module name="databeest" target="1.6" />
     </bytecodeTargetLevel>
   </component>
 </project>
