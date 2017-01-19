@@ -3,7 +3,7 @@ package nl.Databeest.TabItems.Feature.Index;
 import nl.Databeest.Helpers.JTableButtonMouseListener;
 import nl.Databeest.Helpers.JTableButtonRenderer;
 import nl.Databeest.Helpers.RoleHelper;
-import nl.Databeest.Helpers.UserRoles;
+import nl.Databeest.Helpers.User;
 import nl.Databeest.TabItems.IndexAbstractTableModel;
 import nl.Databeest.TabItems.SubMenuItem;
 
@@ -13,7 +13,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
-import java.text.SimpleDateFormat;
 
 /**
  * Created by timok on 15-12-16.
@@ -92,7 +91,7 @@ public class Index extends SubMenuItem {
             stmt.setString(1, name);
             stmt.setInt(2, seqNo);
             stmt.setString(3, start_time);
-            stmt.setInt(4, UserRoles.getInstance().getUserId());
+            stmt.setInt(4, User.getInstance().getUserId());
 
             stmt.execute();
             JOptionPane.showMessageDialog(null, "The feature has been successfully removed.", "Success!", 1);

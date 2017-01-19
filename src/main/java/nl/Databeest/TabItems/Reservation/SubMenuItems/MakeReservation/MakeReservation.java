@@ -2,7 +2,7 @@ package nl.Databeest.TabItems.Reservation.SubMenuItems.MakeReservation;
 
 import nl.Databeest.Helpers.DateHelper;
 import nl.Databeest.Helpers.RoleHelper;
-import nl.Databeest.Helpers.UserRoles;
+import nl.Databeest.Helpers.User;
 import nl.Databeest.TabItems.SubMenuItem;
 
 import javax.swing.*;
@@ -12,7 +12,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by timok on 30-11-16.
@@ -269,7 +268,7 @@ public class MakeReservation  extends SubMenuItem {
             if(RoleHelper.isGuest()){
                 stmt.setNull(7, Types.INTEGER);
             }else {
-                stmt.setInt(7, UserRoles.getInstance().getUserId());
+                stmt.setInt(7, User.getInstance().getUserId());
             }
 
             stmt.execute();
@@ -303,7 +302,7 @@ public class MakeReservation  extends SubMenuItem {
         if(RoleHelper.isGuest()){
             stmt.setNull(7, Types.INTEGER);
         }else {
-            stmt.setInt(7, UserRoles.getInstance().getUserId());
+            stmt.setInt(7, User.getInstance().getUserId());
         }
 
         for (SelectedFeatureModel model: room.getSelectedFeatures()) {
@@ -328,7 +327,7 @@ public class MakeReservation  extends SubMenuItem {
         if(RoleHelper.isGuest()){
             stmt.setNull(3, Types.INTEGER);
         }else {
-            stmt.setInt(3, UserRoles.getInstance().getUserId());
+            stmt.setInt(3, User.getInstance().getUserId());
         }
 
         if(RoleHelper.isGuest() && accountTabbedPane.getSelectedIndex() == 0){

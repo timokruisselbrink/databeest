@@ -1,10 +1,9 @@
 package nl.Databeest.TabItems.Room.Create;
 
-import nl.Databeest.Helpers.UserRoles;
+import nl.Databeest.Helpers.User;
 import nl.Databeest.TabItems.SubMenuItem;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -138,7 +137,7 @@ public class CreateRoom extends SubMenuItem {
             stmt.setInt(4, Integer.parseInt(maxPersonsTextField.getText()));
             stmt.setDouble(5, 0);
             stmt.setInt(6, Integer.parseInt(surfaceTextField.getText()));
-            stmt.setInt(7, UserRoles.getInstance().getUserId());
+            stmt.setInt(7, User.getInstance().getUserId());
 
 
 
@@ -169,7 +168,7 @@ public class CreateRoom extends SubMenuItem {
         PreparedStatement stmt = con.prepareStatement("SP_ADD_SPECIFICATION_FOR_ROOM ?,?,?");
         stmt.setEscapeProcessing(true);
         stmt.setInt(1, roomId);
-        stmt.setInt(3, UserRoles.getInstance().getUserId());
+        stmt.setInt(3, User.getInstance().getUserId());
 
         for(int i = 0; i<selectedSpecifications.size(); i++) {
                 stmt.setString(2, selectedSpecifications.get(i).toString());
@@ -188,7 +187,7 @@ public class CreateRoom extends SubMenuItem {
             stmt = con.prepareStatement("SP_ADD_FEATURE_TO_ROOM ?,?,?,?");
             stmt.setEscapeProcessing(true);
             stmt.setInt(2, roomId);
-            stmt.setInt(4, UserRoles.getInstance().getUserId());
+            stmt.setInt(4, User.getInstance().getUserId());
 
             for (SelectedFeatureModel selectedFeature: selectedFeatures) {
                 stmt.setString(1, selectedFeature.getName());

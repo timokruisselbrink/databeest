@@ -2,7 +2,7 @@ package nl.Databeest.TabItems.Facility.removeFacilityMaintenance;
 
 import nl.Databeest.Helpers.JTableButtonMouseListener;
 import nl.Databeest.Helpers.JTableButtonRenderer;
-import nl.Databeest.Helpers.UserRoles;
+import nl.Databeest.Helpers.User;
 import nl.Databeest.TabItems.IndexAbstractTableModel;
 import nl.Databeest.TabItems.SubMenuItem;
 
@@ -90,7 +90,7 @@ public class removeFacilityMaintenance extends SubMenuItem{
                 stmt.setString(1, facilityName);
                 stmt.setString(2, establishmentName);
                 stmt.setString(3, startTime);
-                stmt.setInt(4, UserRoles.getInstance().getUserId());
+                stmt.setInt(4, User.getInstance().getUserId());
 
                 stmt.execute();
                 JOptionPane.showMessageDialog(null, "The facility maintenance type has been removed successfully.", "Success!", 1);

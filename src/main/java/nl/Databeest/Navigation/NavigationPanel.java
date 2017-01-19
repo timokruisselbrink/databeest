@@ -11,7 +11,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 /**
  * Created by timok on 17-11-16.
@@ -19,12 +18,12 @@ import java.util.ArrayList;
 public class NavigationPanel extends JPanel {
 
     public NavigationPanel() {
-        createTabs();
+        createApp();
     }
     
     private JTabbedPane tabbedPane = new JTabbedPane();
 
-     private void createTabs(){
+     private void createApp(){
  
          setLayout(new BorderLayout());
  
@@ -32,7 +31,7 @@ public class NavigationPanel extends JPanel {
          refreshApp.addActionListener(new ActionListener() {
  
              public void actionPerformed(ActionEvent e) {
-                 createApp();
+                 createTabs();
              }
          });
  
@@ -46,11 +45,11 @@ public class NavigationPanel extends JPanel {
          //The following line enables to use scrolling tabs.
          tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
  
-         createApp();
+         createTabs();
  
      }
  
-     private void createApp(){
+     private void createTabs(){
          tabbedPane.removeAll();
   
           tabbedPane.addTab("Receptionist",  new ReservationMenuItem());

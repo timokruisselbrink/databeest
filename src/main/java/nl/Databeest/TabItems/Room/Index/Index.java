@@ -88,7 +88,7 @@ public class Index extends SubMenuItem{
             stmt.setEscapeProcessing(true);
 
             stmt.setInt(1, roomId);
-            stmt.setInt(2, UserRoles.getInstance().getUserId());
+            stmt.setInt(2, User.getInstance().getUserId());
 
 
             stmt.execute();

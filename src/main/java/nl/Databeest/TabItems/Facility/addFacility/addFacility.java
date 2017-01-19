@@ -1,6 +1,6 @@
 package nl.Databeest.TabItems.Facility.addFacility;
 
-import nl.Databeest.Helpers.UserRoles;
+import nl.Databeest.Helpers.User;
 import nl.Databeest.TabItems.SubMenuItem;
 
 import javax.swing.*;
@@ -63,7 +63,7 @@ public class addFacility extends SubMenuItem{
             stmt.setString(1, txtAddFacilityName.getText());
             stmt.setFloat(2, Float.valueOf(txtAddFacilityPrice.getText()));
             stmt.setString(3, txtAddFacilityMaxPersons.getText());
-            stmt.setInt(4, UserRoles.getInstance().getUserId());
+            stmt.setInt(4, User.getInstance().getUserId());
 
             stmt.execute();
 

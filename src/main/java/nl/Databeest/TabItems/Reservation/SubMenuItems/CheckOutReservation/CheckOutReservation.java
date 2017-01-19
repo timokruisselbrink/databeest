@@ -1,6 +1,6 @@
 package nl.Databeest.TabItems.Reservation.SubMenuItems.CheckOutReservation;
 
-import nl.Databeest.Helpers.UserRoles;
+import nl.Databeest.Helpers.User;
 import nl.Databeest.TabItems.SubMenuItem;
 
 import javax.swing.*;
@@ -71,7 +71,7 @@ public class CheckOutReservation extends SubMenuItem {
                     stmt.setEscapeProcessing(true);
 
                     stmt.setInt(1, selectedReservation);
-                    stmt.setInt(2, UserRoles.getInstance().getUserId());
+                    stmt.setInt(2, User.getInstance().getUserId());
 
                     stmt.execute();
                     JOptionPane.showMessageDialog(null, "The reservation has been successfully checked out.", "Success!", 1);

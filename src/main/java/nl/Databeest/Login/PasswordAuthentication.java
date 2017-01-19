@@ -1,4 +1,4 @@
-package nl.Databeest.TabItems.Reservation.SubMenuItems.MakeReservation;
+package nl.Databeest.Login;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -33,7 +33,7 @@ public final class PasswordAuthentication
      */
     public static final int DEFAULT_COST = 16;
 
-    private static final String ALGORITHM = "PBKDF2WithHmacSHA1";
+    private static final String ALGORITHM = "PBKDF2WithHmacSHA512";
 
     private static final int SIZE = 128;
 

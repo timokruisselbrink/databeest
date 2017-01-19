@@ -1,6 +1,6 @@
 package nl.Databeest;
 
-import nl.Databeest.Helpers.UserRoles;
+import nl.Databeest.Helpers.User;
 import nl.Databeest.Login.LoginDialog;
 import nl.Databeest.Navigation.NavigationPanel;
 
@@ -27,11 +27,11 @@ public class Main {
             //Add content to the window.
 
             if(loginDlg.isAsGuest()){
-                UserRoles.getInstance().setGuest(true);
+                User.getInstance().setGuest(true);
             }
             else {
-                UserRoles.getInstance().setRoles(loginDlg.getRoles());
-                UserRoles.getInstance().setUserId(loginDlg.getUserId());
+                User.getInstance().setRoles(loginDlg.getRoles());
+                User.getInstance().setUserId(loginDlg.getUserId());
             }
 
             frame.add(new NavigationPanel(), BorderLayout.CENTER);

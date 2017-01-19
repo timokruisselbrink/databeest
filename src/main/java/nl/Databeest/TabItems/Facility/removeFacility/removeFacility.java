@@ -3,7 +3,7 @@ package nl.Databeest.TabItems.Facility.removeFacility;
 import nl.Databeest.Helpers.JTableButtonMouseListener;
 import nl.Databeest.Helpers.JTableButtonRenderer;
 import nl.Databeest.Helpers.RoleHelper;
-import nl.Databeest.Helpers.UserRoles;
+import nl.Databeest.Helpers.User;
 import nl.Databeest.TabItems.IndexAbstractTableModel;
 import nl.Databeest.TabItems.SubMenuItem;
 
@@ -91,7 +91,7 @@ public class removeFacility extends SubMenuItem{
 
             stmt.setString(1, facilityName);
             stmt.setString(2, facilityStartDate);
-            stmt.setInt(3, UserRoles.getInstance().getUserId());
+            stmt.setInt(3, User.getInstance().getUserId());
 
             stmt.execute();
             JOptionPane.showMessageDialog(null, "The facility has been successfully removed.", "Success!", 1);

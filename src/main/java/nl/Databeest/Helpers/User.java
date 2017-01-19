@@ -5,16 +5,16 @@ import java.util.ArrayList;
 /**
  * Created by timok on 12-01-17.
  */
-public class UserRoles {
+public class User {
 
 
-    private static UserRoles ourInstance = new UserRoles();
+    private static User ourInstance = new User();
 
-    public static UserRoles getInstance() {
+    public static User getInstance() {
         return ourInstance;
     }
 
-    private UserRoles() {
+    private User() {
     }
 
     private int userId;

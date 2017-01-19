@@ -1,6 +1,6 @@
 package nl.Databeest.TabItems.Feature.createFeatureType;
 
-import nl.Databeest.Helpers.UserRoles;
+import nl.Databeest.Helpers.User;
 import nl.Databeest.TabItems.SubMenuItem;
 
 import javax.swing.*;
@@ -62,7 +62,7 @@ public class createFeatureType extends SubMenuItem{
             stmt.setString(1, txtFeatureTypeName.getText());
             stmt.setFloat(2, Float.valueOf(txtFeatureTypePrice.getText()));
             stmt.setDate(3, date);
-            stmt.setInt(4, UserRoles.getInstance().getUserId());
+            stmt.setInt(4, User.getInstance().getUserId());
 
             stmt.execute();
 

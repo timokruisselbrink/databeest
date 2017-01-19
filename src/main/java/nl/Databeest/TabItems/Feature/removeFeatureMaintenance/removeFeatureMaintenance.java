@@ -1,9 +1,8 @@
 package nl.Databeest.TabItems.Feature.removeFeatureMaintenance;
 
-import nl.Databeest.Helpers.DateHelper;
 import nl.Databeest.Helpers.JTableButtonMouseListener;
 import nl.Databeest.Helpers.JTableButtonRenderer;
-import nl.Databeest.Helpers.UserRoles;
+import nl.Databeest.Helpers.User;
 import nl.Databeest.TabItems.IndexAbstractTableModel;
 import nl.Databeest.TabItems.SubMenuItem;
 
@@ -116,7 +115,7 @@ public class removeFeatureMaintenance extends SubMenuItem{
                 stmt.setInt(2, seqNo);
                 stmt.setString(3, getFeatureTypeStartTime(typeName));
                 stmt.setString(4, startTime);
-                stmt.setInt(5, UserRoles.getInstance().getUserId());
+                stmt.setInt(5, User.getInstance().getUserId());
 
                 stmt.execute();
                 JOptionPane.showMessageDialog(null, "The feature maintenance type has been removed successfully.", "Success!", 1);

@@ -1,7 +1,6 @@
 package nl.Databeest.Login;
 
 import nl.Databeest.Database.Database;
-import nl.Databeest.TabItems.Reservation.SubMenuItems.MakeReservation.PasswordAuthentication;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -52,6 +51,8 @@ public class LoginDialog extends JDialog{
         cs.gridy = 0;
         cs.gridwidth = 2;
         panel.add(tfUsername, cs);
+
+        tfUsername.setText(passwordAuthentication.hash("test123"));
 
         lbPassword = new JLabel("Password: ");
         cs.gridx = 0;

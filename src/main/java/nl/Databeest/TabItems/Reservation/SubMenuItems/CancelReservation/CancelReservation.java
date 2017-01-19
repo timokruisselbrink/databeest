@@ -1,6 +1,6 @@
 package nl.Databeest.TabItems.Reservation.SubMenuItems.CancelReservation;
 
-import nl.Databeest.Helpers.UserRoles;
+import nl.Databeest.Helpers.User;
 import nl.Databeest.TabItems.SubMenuItem;
 
 import javax.swing.*;
@@ -60,7 +60,7 @@ public class CancelReservation extends SubMenuItem {
                     stmt.setEscapeProcessing(true);
 
                     stmt.setInt(1, selectedReservation);
-                    stmt.setInt(2, UserRoles.getInstance().getUserId());
+                    stmt.setInt(2, User.getInstance().getUserId());
 
                     stmt.execute();
                     JOptionPane.showMessageDialog(null, "The reservation has been cancelled successfully.", "Success!", 1);
@@ -115,6 +115,13 @@ public class CancelReservation extends SubMenuItem {
                 stmt.setNull(3, Types.VARCHAR);
             }
 
+            if(reservationNumberTextField.getText() != null && !reservationNumberTextField.getText().isEmpty()){
+                stmt.setInt(5, Integer.parseInt(reservationNumberTextField.getText()));
+            }
+            else {
+                stmt.setNull(5, Types.INTEGER);
+            }
+
             if(emalAddressTextField.getText() != null && !emalAddressTextField.getText().isEmpty()){
                 stmt.setString(4, emalAddressTextField.getText());
             }
@@ -122,12 +129,7 @@ public class CancelReservation extends SubMenuItem {
                 stmt.setNull(4, Types.VARCHAR);
             }
 
-            if(reservationNumberTextField.getText() != null && !reservationNumberTextField.getText().isEmpty()){
-                stmt.setInt(5, Integer.parseInt(reservationNumberTextField.getText()));
-            }
-            else {
-                stmt.setNull(5, Types.INTEGER);
-            }
+
 
 
 
@@ -151,6 +153,7 @@ public class CancelReservation extends SubMenuItem {
                 aModel.addRow(objects);
             }
             reservationsJTable.setModel(aModel);
+
 
 
 

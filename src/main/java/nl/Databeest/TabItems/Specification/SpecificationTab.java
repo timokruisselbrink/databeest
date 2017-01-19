@@ -1,7 +1,6 @@
 package nl.Databeest.TabItems.Specification;
 
 import nl.Databeest.Helpers.RoleHelper;
-import nl.Databeest.Helpers.UserRoles;
 import nl.Databeest.TabItems.MenuItem;
 import nl.Databeest.TabItems.Specification.Index.Index;
 import nl.Databeest.TabItems.SubMenuItem;

@@ -3,7 +3,7 @@ package nl.Databeest.TabItems.Specification.Index;
 import nl.Databeest.Helpers.JTableButtonMouseListener;
 import nl.Databeest.Helpers.JTableButtonRenderer;
 import nl.Databeest.Helpers.RoleHelper;
-import nl.Databeest.Helpers.UserRoles;
+import nl.Databeest.Helpers.User;
 import nl.Databeest.TabItems.IndexAbstractTableModel;
 import nl.Databeest.TabItems.SubMenuItem;
 
@@ -13,7 +13,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -92,7 +91,7 @@ public class Index extends SubMenuItem {
 
             stmt.setString(1, name);
             stmt.setString(2, start_time);
-            stmt.setInt(3, UserRoles.getInstance().getUserId());
+            stmt.setInt(3, User.getInstance().getUserId());
 
             stmt.execute();
 

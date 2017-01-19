@@ -1,5 +1,6 @@
 package nl.Databeest.TabItems.Reservation.SubMenuItems.MakeReservation;
 
+import nl.Databeest.Login.PasswordAuthentication;
 import nl.Databeest.TabItems.SubMenuItem;
 
 import javax.swing.*;

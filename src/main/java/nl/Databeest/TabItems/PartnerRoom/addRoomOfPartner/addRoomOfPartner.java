@@ -1,7 +1,7 @@
 package nl.Databeest.TabItems.PartnerRoom.addRoomOfPartner;
 
 import nl.Databeest.Helpers.DateHelper;
-import nl.Databeest.Helpers.UserRoles;
+import nl.Databeest.Helpers.User;
 import nl.Databeest.TabItems.SubMenuItem;
 
 import javax.swing.*;
@@ -138,7 +138,7 @@ public class addRoomOfPartner extends SubMenuItem {
             stmt.setDate(3, startDate);
             stmt.setDate(4, endDate);
             stmt.setFloat(5, Float.valueOf(txtRoomOfPartnerPrice.getText()));
-            stmt.setInt(6, UserRoles.getInstance().getUserId());
+            stmt.setInt(6, User.getInstance().getUserId());
 
             stmt.execute();
             JOptionPane.showMessageDialog(null, "The room for the partner has been added successfully.", "Success!", 1);

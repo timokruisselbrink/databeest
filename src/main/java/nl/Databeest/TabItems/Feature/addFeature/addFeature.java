@@ -1,7 +1,6 @@
 package nl.Databeest.TabItems.Feature.addFeature;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
-import nl.Databeest.Helpers.UserRoles;
+import nl.Databeest.Helpers.User;
 import nl.Databeest.TabItems.SubMenuItem;
 
 import javax.swing.*;
@@ -12,7 +11,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Calendar;
 
 /**
  * Created by A on 19/12/2016.
@@ -96,7 +94,7 @@ public class addFeature extends SubMenuItem{
             stmt.setInt(2, highestFeatureSeqNoPlusOne());
             stmt.setString(3, getFeatureTypeStartTime());
             stmt.setString(4, "Midden-Nederland");
-            stmt.setInt(5, UserRoles.getInstance().getUserId());
+            stmt.setInt(5, User.getInstance().getUserId());
 
             stmt.execute();
             closeConn(con, stmt);

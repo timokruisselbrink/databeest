@@ -3,7 +3,7 @@ package nl.Databeest.TabItems.PartnerRoom.Index;
 import nl.Databeest.Helpers.JTableButtonMouseListener;
 import nl.Databeest.Helpers.JTableButtonRenderer;
 import nl.Databeest.Helpers.RoleHelper;
-import nl.Databeest.Helpers.UserRoles;
+import nl.Databeest.Helpers.User;
 import nl.Databeest.TabItems.IndexAbstractTableModel;
 import nl.Databeest.TabItems.SubMenuItem;
 
@@ -14,7 +14,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
@@ -94,7 +93,7 @@ public class DeletePartnerRooms extends SubMenuItem {
             stmt.setInt(1, roomId);
             stmt.setString(2, partnerName);
             stmt.setString(3, startDate);
-            stmt.setInt(4, UserRoles.getInstance().getUserId());
+            stmt.setInt(4, User.getInstance().getUserId());
 
             stmt.execute();
             JOptionPane.showMessageDialog(null, "The room of partner has been deleted successfully.", "Success!", 1);

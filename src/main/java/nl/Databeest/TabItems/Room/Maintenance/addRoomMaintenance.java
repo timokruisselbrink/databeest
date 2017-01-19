@@ -1,7 +1,7 @@
 package nl.Databeest.TabItems.Room.Maintenance;
 
 import nl.Databeest.Helpers.DateHelper;
-import nl.Databeest.Helpers.UserRoles;
+import nl.Databeest.Helpers.User;
 import nl.Databeest.TabItems.SubMenuItem;
 
 import javax.swing.*;
@@ -108,7 +108,7 @@ public class addRoomMaintenance extends SubMenuItem{
                 stmt.setDate(3, endDate);
             }
             stmt.setString(4, txtAddRoomMaintenanceReason.getText());
-            stmt.setInt(5, UserRoles.getInstance().getUserId());
+            stmt.setInt(5, User.getInstance().getUserId());
 
             stmt.execute();
             JOptionPane.showMessageDialog(null, "The room maintenance has been added successfully.", "Success!", 1);

@@ -1,7 +1,7 @@
 package nl.Databeest.TabItems.Facility.addFacilityMaintenance;
 
 import nl.Databeest.Helpers.DateHelper;
-import nl.Databeest.Helpers.UserRoles;
+import nl.Databeest.Helpers.User;
 import nl.Databeest.TabItems.SubMenuItem;
 
 import javax.swing.*;
@@ -106,7 +106,7 @@ public class addFacilityMaintenance extends SubMenuItem{
             stmt.setDate(2, startDate);
             stmt.setDate(3, endDate);
             stmt.setString(4, txtAddFacilityMaintenanceReason.getText());
-            stmt.setInt(5, UserRoles.getInstance().getUserId());
+            stmt.setInt(5, User.getInstance().getUserId());
             stmt.setString(6, part2);
 
             stmt.execute();

@@ -1,7 +1,7 @@
 package nl.Databeest.TabItems.Reservation.SubMenuItems.MakeReservation;
 
 import nl.Databeest.Helpers.RoleHelper;
-import nl.Databeest.Helpers.UserRoles;
+import nl.Databeest.Helpers.User;
 import nl.Databeest.TabItems.SubMenuItem;
 
 import javax.swing.*;
@@ -49,7 +49,7 @@ public class WithoutAccount extends SubMenuItem{
         if(RoleHelper.isGuest()){
             stmt.setNull(1, Types.INTEGER);
         }else {
-            stmt.setInt(1, UserRoles.getInstance().getUserId());
+            stmt.setInt(1, User.getInstance().getUserId());
         }
 
         if(firstNameTextField.getText() == null || firstNameTextField.getText().isEmpty()){
