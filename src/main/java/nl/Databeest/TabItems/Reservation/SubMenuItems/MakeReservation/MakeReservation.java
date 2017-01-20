@@ -253,6 +253,10 @@ public class MakeReservation  extends SubMenuItem {
         PreparedStatement stmt = con.prepareStatement("EXEC SP_INSERT_RESERVATION_ROW ?,?,?,?,?,?,?");
         stmt.setEscapeProcessing(true);
 
+        if(selectedRooms.size() == 0){
+            throw new SQLException("Select at least one room.");
+        }
+
         int seqNo = 1;
         for (SelectedRoomPanel selectedRoom: selectedRooms) {
             stmt.setInt(1, seqNo);
