@@ -127,7 +127,7 @@ public class addRoomMaintenance extends SubMenuItem{
         PreparedStatement stmt = null;
 
         try{
-            stmt = con.prepareStatement("SELECT Room_ID FROM ROOM WHERE END_TIME < GETDATE()");
+            stmt = con.prepareStatement("SELECT Room_ID FROM ROOM WHERE END_TIME IS NULL");
             stmt.setEscapeProcessing(true);
 
 

@@ -53,7 +53,7 @@ public class removeFeatureMaintenance extends SubMenuItem{
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement("SELECT FEATURE_TYPE.NAME, FEATURE_SEQ_NO FROM FEATURE_MAINTENANCE INNER JOIN FEATURE_TYPE ON FEATURE_MAINTENANCE.FEATURE_TYPE_ID = FEATURE_TYPE.FEATURE_TYPE_ID WHERE IS_CANCELLED <> 1");
+            stmt = con.prepareStatement("SELECT FEATURE_TYPE.NAME, FEATURE_SEQ_NO, FEATURE_MAINTENANCE.START_TIME FROM FEATURE_MAINTENANCE INNER JOIN FEATURE_TYPE ON FEATURE_MAINTENANCE.FEATURE_TYPE_ID = FEATURE_TYPE.FEATURE_TYPE_ID WHERE IS_CANCELLED <> 1");
             stmt.setEscapeProcessing(true);
 
 
@@ -84,7 +84,7 @@ public class removeFeatureMaintenance extends SubMenuItem{
         Connection con = getConnection();
         PreparedStatement stmt = null;
         try {
-            stmt = con.prepareStatement("SELECT START_TIME FROM FEATURE_TYPE WHERE NAME = ?");
+            stmt = con.prepareStatement("SELECT START_TIME FROM FEATURE_TYPE WHERE NAME = ? AND END_TIME IS NULL");
             stmt.setEscapeProcessing(true);
 
             stmt.setString(1, typeName);
