@@ -57,7 +57,7 @@ public class MakeReservation  extends SubMenuItem {
     }
 
     public MakeReservation(){
-       createComboBoxItems();
+        createComboBoxItems();
         setActionListeners();
         setTestData();
         createCreateAccount();
