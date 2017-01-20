@@ -60,7 +60,7 @@ public class Index extends SubMenuItem {
 
 
         try {
-            stmt = con.prepareStatement("SELECT FEATURE_TYPE.NAME, SEQ_NO FROM FEATURE INNER JOIN FEATURE_TYPE ON FEATURE.FEATURE_TYPE_ID = FEATURE_TYPE.FEATURE_TYPE_ID WHERE IS_DELETED <> 1");
+            stmt = con.prepareStatement("SELECT FEATURE_TYPE.NAME, SEQ_NO, FEATURE_TYPE.START_TIME FROM FEATURE INNER JOIN FEATURE_TYPE ON FEATURE.FEATURE_TYPE_ID = FEATURE_TYPE.FEATURE_TYPE_ID WHERE IS_DELETED <> 1");
             stmt.setEscapeProcessing(true);
 
             featureIndexTable.setModel(new IndexAbstractTableModel(stmt.executeQuery()) {
@@ -68,7 +68,7 @@ public class Index extends SubMenuItem {
                 public void deleteRow(Object[] row) {
 
 
-                    deleteFeature((String)row[0], Integer.parseInt((String) row[1]),(String)row[3]);
+                    deleteFeature((String)row[0], Integer.parseInt((String) row[1]),(String)row[2]);
             }
             });
 

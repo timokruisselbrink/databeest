@@ -6,10 +6,12 @@ package nl.Databeest.TabItems.Room.Create;
 public class SelectedFeatureModel {
     private String name;
     private int amount;
+    private String startTime;
 
-    public SelectedFeatureModel(String name, int amount){
+    public SelectedFeatureModel(String name, int amount, String startTime){
         this.name = name;
         this.amount = amount;
+        this.startTime = startTime;
     }
 
     public String getName() {
@@ -26,5 +28,9 @@ public class SelectedFeatureModel {
 
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    public String getStartTime() {
+        return startTime;
     }
 }

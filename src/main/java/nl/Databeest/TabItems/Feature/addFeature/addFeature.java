@@ -87,14 +87,13 @@ public class addFeature extends SubMenuItem{
         PreparedStatement stmt = null;
 
         try{
-            stmt = con.prepareStatement("SP_ADD_FEATURE ?,?,?,?,?");
+            stmt = con.prepareStatement("SP_ADD_FEATURE ?,?,?,?");
             stmt.setEscapeProcessing(true);
 
             stmt.setString(1, cmbAddFeature.getSelectedItem().toString());
             stmt.setInt(2, highestFeatureSeqNoPlusOne());
             stmt.setString(3, getFeatureTypeStartTime());
-            stmt.setString(4, "Midden-Nederland");
-            stmt.setInt(5, User.getInstance().getUserId());
+            stmt.setInt(4, User.getInstance().getUserId());
 
             stmt.execute();
             closeConn(con, stmt);
@@ -113,7 +112,7 @@ public class addFeature extends SubMenuItem{
         PreparedStatement stmt = null;
 
         try{
-            stmt = con.prepareStatement("SELECT MAX(SEQ_NO)+1 FROM FEATURE WHERE FEATURE_TYPE_NAME = ?");
+            stmt = con.prepareStatement("SELECT MAX(SEQ_NO)+1 FROM FEATURE INNER JOIN FEATURE_TYPE ON FEATURE.FEATURE_TYPE_ID = FEATURE_TYPE.FEATURE_TYPE_ID WHERE NAME = ?");
             stmt.setEscapeProcessing(true);
 
             stmt.setString(1, cmbAddFeature.getSelectedItem().toString());

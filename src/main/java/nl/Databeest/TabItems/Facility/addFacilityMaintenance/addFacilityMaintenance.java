@@ -96,18 +96,18 @@ public class addFacilityMaintenance extends SubMenuItem{
             stmt.setEscapeProcessing(true);
 
 
-            String string = cmbAddFacilityMaintenance.getSelectedItem().toString();;
+            String string = cmbAddFacilityMaintenance.getSelectedItem().toString();
             String[] parts = string.split("\\|");
             String part1 = parts[0];
             String part2 = parts[1];
 
 
             stmt.setString(1, part1);
-            stmt.setDate(2, startDate);
-            stmt.setDate(3, endDate);
-            stmt.setString(4, txtAddFacilityMaintenanceReason.getText());
-            stmt.setInt(5, User.getInstance().getUserId());
-            stmt.setString(6, part2);
+            stmt.setString(2, part2);
+            stmt.setDate(3, startDate);
+            stmt.setDate(4, endDate);
+            stmt.setString(5, txtAddFacilityMaintenanceReason.getText());
+            stmt.setInt(6, User.getInstance().getUserId());
 
             stmt.execute();
 

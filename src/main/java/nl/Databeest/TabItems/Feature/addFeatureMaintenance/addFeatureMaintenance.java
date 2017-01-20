@@ -134,9 +134,9 @@ public class addFeatureMaintenance extends SubMenuItem{
 
                 stmt.setString(1, part1);
                 stmt.setInt(2, part2);
-                //stmt.setString(3, "Midden-Nederland");
                 stmt.setString(3, part3);
                 stmt.setDate(4, startDate);
+
             if(endDate == null){
                 stmt.setNull(5, Types.DATE);
             }else {
@@ -162,7 +162,7 @@ public class addFeatureMaintenance extends SubMenuItem{
         PreparedStatement stmt = null;
 
         try{
-            stmt = con.prepareStatement("SELECT FEATURE_TYPE.NAME, SEQ_NO, FEATURE.FEATURE_TYPE_ID FROM FEATURE INNER JOIN FEATURE_TYPE ON FEATURE.FEATURE_TYPE_ID = FEATURE_TYPE.FEATURE_TYPE_ID WHERE IS_DELETED <> 1");
+            stmt = con.prepareStatement("SELECT FEATURE_TYPE.NAME, SEQ_NO, FEATURE_TYPE.START_TIME FROM FEATURE INNER JOIN FEATURE_TYPE ON FEATURE.FEATURE_TYPE_ID = FEATURE_TYPE.FEATURE_TYPE_ID WHERE IS_DELETED <> 1");
             stmt.setEscapeProcessing(true);
 
 
@@ -173,9 +173,9 @@ public class addFeatureMaintenance extends SubMenuItem{
             while(rs.next()) {
                 String Feature_Type_Name = rs.getString(1);
                 String Feature_Seq_No = rs.getString(2);
-                String Feature_Type_Id = rs.getString(2);
+                String Feature_Type_Start_Time = rs.getString(3);
 
-                cmbFeatureTypeNameForMaintenance.addItem(Feature_Type_Name + "|" + Feature_Seq_No + "|" + Feature_Type_Id);
+                cmbFeatureTypeNameForMaintenance.addItem(Feature_Type_Name + "|" + Feature_Seq_No + "|" + Feature_Type_Start_Time);
             }
             closeConn(con, stmt);
 

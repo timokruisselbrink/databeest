@@ -184,7 +184,7 @@ public class CreateRoom extends SubMenuItem {
         ArrayList<SelectedFeatureModel> selectedFeatures = featureTableModel.getSelectedFeatures();
         PreparedStatement stmt = null;
 
-            stmt = con.prepareStatement("SP_ADD_FEATURE_TO_ROOM ?,?,?,?");
+            stmt = con.prepareStatement("SP_ADD_FEATURE_TO_ROOM ?,?,?,?,?");
             stmt.setEscapeProcessing(true);
             stmt.setInt(2, roomId);
             stmt.setInt(4, User.getInstance().getUserId());
@@ -192,6 +192,7 @@ public class CreateRoom extends SubMenuItem {
             for (SelectedFeatureModel selectedFeature: selectedFeatures) {
                 stmt.setString(1, selectedFeature.getName());
                 stmt.setInt(3, selectedFeature.getAmount());
+                stmt.setString(5, selectedFeature.getStartTime());
 
                 stmt.execute();
             }
@@ -204,7 +205,7 @@ public class CreateRoom extends SubMenuItem {
 
 
 
-            PreparedStatement stmt = con.prepareStatement("SELECT NAME FROM SPECIFICATION" );
+            PreparedStatement stmt = con.prepareStatement("SELECT NAME FROM SPECIFICATION WHERE END_TIME IS NULL" );
             stmt.setEscapeProcessing(true);
 
             rs = stmt.executeQuery();
@@ -215,7 +216,7 @@ public class CreateRoom extends SubMenuItem {
     public ResultSet getFeatures(Connection con) throws SQLException {
         ResultSet rs = null;
 
-            PreparedStatement stmt = con.prepareStatement("SELECT NAME FROM FEATURE_TYPE" );
+            PreparedStatement stmt = con.prepareStatement("SELECT NAME, START_TIME FROM FEATURE_TYPE WHERE END_TIME IS NULL" );
             stmt.setEscapeProcessing(true);
 
             rs=stmt.executeQuery();
@@ -229,7 +230,7 @@ public class CreateRoom extends SubMenuItem {
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement("SELECT NAME FROM ROOM_TYPE");
+            stmt = con.prepareStatement("SELECT NAME FROM ROOM_TYPE WHERE END_TIME IS NULL");
             stmt.setEscapeProcessing(true);
 
             ResultSet rs = stmt.executeQuery();

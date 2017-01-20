@@ -77,11 +77,15 @@ public class selectFeatureAbstractTableModel extends AbstractTableModel{
             ((Object[]) cache.elementAt(row))[col] = b;
 
             if (b) {
-                selectedRows.add(row);
-                ((Object[]) cache.elementAt(row))[col +1] = 1;
+                if(!selectedRows.contains(row)){
+                    selectedRows.add(row);
+                    ((Object[]) cache.elementAt(row))[col +1] = 1;
+                }
             } else {
-                selectedRows.remove(row);
-                ((Object[]) cache.elementAt(row))[col +1] = 0;
+                if(selectedRows.contains(row)){
+                    selectedRows.remove(row);
+                    ((Object[]) cache.elementAt(row))[col +1] = 0;
+                }
             }
 
         }
@@ -118,7 +122,9 @@ public class selectFeatureAbstractTableModel extends AbstractTableModel{
         for (int selectedRow: selectedRows) {
             result.add(new SelectedFeatureModel(
                     ((String)getValueAt(selectedRow, 0)),
-                    ((Integer)getValueAt(selectedRow, colCount -1)))
+                    ((Integer)getValueAt(selectedRow, colCount -1)),
+                    ((String)getValueAt(selectedRow, 1))
+                    )
             );
         }
 
